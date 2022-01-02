@@ -1,7 +1,8 @@
-require('dotenv').config();
-const express = require('express');
+import dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
 const app = express();
-const userRouter = require('./routes/users');
+import userRouter from './routes/users.js';
 const PORT = process.env.PORT;
 
 app.get('/', (req, res) => {

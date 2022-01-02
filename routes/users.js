@@ -1,49 +1,68 @@
-require('dotenv').config();
-const express = require('express');
-const User = require('../Models/User.js');
-const bcrypt = require('bcrypt');
+import dotenv from 'dotenv';;
+import express from 'express';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import oracledb from 'oracledb';
+oracledb.autoCommit = true;
+dotenv.config();
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-router.use(express.json())
+router.use(express.json());
 
 router.get('/', (req, res) => {
     res.send("Bleh")
 });
 
-const users = [];
-
 router.post('/signup', async (req, res) => {
-
+    let conn;
     try{
         const hahsedPass = await bcrypt.hash(req.body.pass, 10);
-        user = new User(req.body.name, hahsedPass);
-        //sql balsal here
-        users.push(user);
-        //sql balsal here
+        let user = req.body;
+        user.pass = hahsedPass;
+        user.join_date = Date.now();
+        let insertUser = `INSERT INTO USERS VALUES(:handle, :name, :pass, :join_date, :last_login, :global_rating, :email)`;
+        conn = await oracledb.getConnection({user: 'hr', password: 'hr', connectionString: '0.0.0.0/orcl'});
+        await conn.execute(insertUser, user);
         res.status(201).send();
-    }catch{
+    }catch(err) {
+        console.log(err);
         res.status(500).send();
+    }finally{
+        if(conn != null){
+            try{
+                conn.close();
+            }catch(err){
+                console.log(err);
+            }
+        }
     }
 });
 
 router.post('/login', async (req, res) => {
-    const user = users.find(user => user.name === req.body.name);
-    if(user == null){
-        return res.status(400).send("No such user");
-    }
-
+    let conn;
+    let result;
     try{
-        if(await bcrypt.compare(req.body.pass, user.password)){
-            console.log('success');
-            const accessToken = jwt.sign(JSON.stringify(user), process.env.SECRET_KEY);
+        conn = await oracledb.getConnection({user: 'hr', password: 'hr', connectionString: '0.0.0.0/orcl'});
+        result = await conn.execute(`SELECT * FROM USERS WHERE HANDLE = :handle`, [req.body.handle]);
+        if(result.rows.length == 0){
+            return res.status(400).send("No such user");
+        }
+        if(await bcrypt.compare(req.body.pass, result.rows[0][2])){
+            await conn.execute(`UPDATE USERS SET LAST_LOGIN = :now WHERE HANDLE = :handle`, [Number(Date.now()), req.body.handle]);
+            const accessToken = jwt.sign(req.body.handle, process.env.SECRET_KEY);
             res.json({ accessToken: accessToken });
         }
         else{
             console.log('wrong password');
         }
-    }catch{
+    }catch(err) {
+        console.log(err);
         res.status(500).send();
+    }finally{
+        try{
+            conn.close();
+        }catch(err){
+            console.log(err);
+        }
     }
 })
-
-module.exports = router;
+export default router;

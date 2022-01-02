@@ -6,8 +6,13 @@ POST http://localhost:5000/users/signup/
 Content-Type: application/json
 
 {
-    "name": "Blah",
-    "pass": "Bleh"
+    "handle": "blah",
+    "name": "Blah Blah",
+    "pass": "Bleh",
+    "join_date": null,
+    "last_login": null,
+    "global_rating": null,
+    "email": null
 }
 
 ###
@@ -16,7 +21,7 @@ POST http://localhost:5000/users/login/
 Content-Type: application/json
 
 {
-    "name": "Blah",
+    "handle": "blah",
     "pass": "Bleh"
 }
 
