@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import oracledb from 'oracledb';
 import auth from '../Middleware/auth.js'
+import moment from 'moment';
 oracledb.autoCommit = true;
 dotenv.config();
 const router = express.Router();
@@ -26,9 +27,8 @@ router.post('/signup', async (req, res) => {
         const hahsedPass = await bcrypt.hash(req.body.pass, 10);
         let user = req.body;
         user.pass = hahsedPass;
-        user.join_date = Date.now();
-        let insertUser = `INSERT INTO USERS VALUES(:handle, :name, :pass, :join_date, :last_login, :global_rating, :email)`;
-        conn = await oracledb.getConnection({user: 'hr', password: 'hr', connectionString: '0.0.0.0/orcl'});
+        let insertUser = `INSERT INTO USERS(handle, name, password, last_login, email) VALUES(:handle, :name, :pass, :last_login, :email)`;
+        conn = await oracledb.getConnection({user: 'C##OJ', password: 'oj', connectionString: '0.0.0.0/orcl'});
         await conn.execute(insertUser, user);
         res.status(201).send();
     }catch(err) {
@@ -49,13 +49,13 @@ router.post('/login', async (req, res) => {
     let conn;
     let result;
     try{
-        conn = await oracledb.getConnection({user: 'hr', password: 'hr', connectionString: '0.0.0.0/orcl'});
+        conn = await oracledb.getConnection({user: 'C##OJ', password: 'oj', connectionString: '0.0.0.0/orcl'});
         result = await conn.execute(`SELECT * FROM USERS WHERE HANDLE = :handle`, [req.body.handle]);
         if(result.rows.length == 0){
             return res.status(400).send("No such user");
         }
         if(await bcrypt.compare(req.body.pass, result.rows[0][2])){
-            await conn.execute(`UPDATE USERS SET LAST_LOGIN = :now WHERE HANDLE = :handle`, [Number(Date.now()), req.body.handle]);
+            await conn.execute(`UPDATE USERS SET LAST_LOGIN = TO_DATE(:now, 'DD/MM/YYYY') WHERE HANDLE = :handle`, [moment().format("DD/MM/YYYY"), req.body.handle]);
             const accessToken = jwt.sign({handle: req.body.handle}, process.env.SECRET_KEY, {expiresIn: '5m'});
             res.json({ accessToken: accessToken });
         }

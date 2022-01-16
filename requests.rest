@@ -1,5 +1,5 @@
-GET http://localhost:5000/users/bleh
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJibGVoIiwiaWF0IjoxNjQxMjIwNzQ3LCJleHAiOjE2NDEyMjEwNDd9.t4VyTezWSBZp-J1tknarzAaH9cMGRtDLf1mLikYixsA
+GET http://localhost:5000/users/blah
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJibGFoIiwiaWF0IjoxNjQyMzQwMTM2LCJleHAiOjE2NDIzNDA0MzZ9.SoyROHLRbgBm1I_0JjHjSPwtRCraYneJtBQHadb7zek
 
 ###
 
@@ -10,9 +10,7 @@ Content-Type: application/json
     "handle": "blah",
     "name": "Blah Blah",
     "pass": "Bleh",
-    "join_date": null,
     "last_login": null,
-    "global_rating": null,
     "email": null
 }
 
@@ -22,7 +20,7 @@ POST http://localhost:5000/users/login/
 Content-Type: application/json
 
 {
-    "handle": "bleh",
+    "handle": "blah",
     "pass": "Bleh"
 }
 
