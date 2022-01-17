@@ -24,9 +24,9 @@ router.get('/:handle', auth, (req, res) => {
 router.post('/signup', async (req, res) => {
     let conn;
     try{
-        const hahsedPass = await bcrypt.hash(req.body.pass, 10);
+        const hashedPass = await bcrypt.hash(req.body.pass, 10);
         let user = req.body;
-        user.pass = hahsedPass;
+        user.pass = hashedPass;
         let insertUser = `INSERT INTO USERS(handle, name, password, last_login, email) VALUES(:handle, :name, :pass, :last_login, :email)`;
         conn = await oracledb.getConnection({user: 'C##OJ', password: 'oj', connectionString: '0.0.0.0/orcl'});
         await conn.execute(insertUser, user);
@@ -46,13 +46,15 @@ router.post('/signup', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
+    console.log(req.body);
+
     let conn;
     let result;
     try{
         conn = await oracledb.getConnection({user: 'C##OJ', password: 'oj', connectionString: '0.0.0.0/orcl'});
         result = await conn.execute(`SELECT * FROM USERS WHERE HANDLE = :handle`, [req.body.handle]);
         if(result.rows.length == 0){
-            return res.status(400).send("No such user");
+            return res.status(400).send({error: "No such user"});
         }
         if(await bcrypt.compare(req.body.pass, result.rows[0][2])){
             await conn.execute(`UPDATE USERS SET LAST_LOGIN = TO_DATE(:now, 'DD/MM/YYYY') WHERE HANDLE = :handle`, [moment().format("DD/MM/YYYY"), req.body.handle]);
@@ -60,6 +62,7 @@ router.post('/login', async (req, res) => {
             res.json({ accessToken: accessToken });
         }
         else{
+            return res.status(400).send({error: "Wrong password"})
             console.log('wrong password');
         }
     }catch(err) {
