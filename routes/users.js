@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import oracledb from 'oracledb';
 import auth from '../Middleware/auth.js'
 import moment from 'moment';
+import {executeQuery} from '../DB/executequery.js';
 oracledb.autoCommit = true;
 dotenv.config();
 const router = express.Router();
@@ -22,58 +23,46 @@ router.get('/:handle', auth, (req, res) => {
 });
 
 router.post('/signup', async (req, res) => {
-    let conn;
+    let result;
     try{
         const hashedPass = await bcrypt.hash(req.body.pass, 10);
         let user = req.body;
         user.pass = hashedPass;
+        let checkUser = `SELECT handle FROM users WHERE handle = :handle`;
+        result = await executeQuery(checkUser, [user.handle]);
+        if(result.rows.length != 0){
+            res.status(500).send();
+            return;
+        }
         let insertUser = `INSERT INTO USERS(handle, name, password, last_login, email) VALUES(:handle, :name, :pass, :last_login, :email)`;
-        conn = await oracledb.getConnection({user: 'C##OJ', password: 'oj', connectionString: '0.0.0.0/orcl'});
-        await conn.execute(insertUser, user);
+        result = await executeQuery(insertUser, user);
         res.status(201).send();
     }catch(err) {
         console.log(err);
         res.status(500).send();
-    }finally{
-        if(conn != null){
-            try{
-                conn.close();
-            }catch(err){
-                console.log(err);
-            }
-        }
     }
 });
 
 router.post('/login', async (req, res) => {
-    console.log(req.body);
-
-    let conn;
     let result;
     try{
-        conn = await oracledb.getConnection({user: 'C##OJ', password: 'oj', connectionString: '0.0.0.0/orcl'});
-        result = await conn.execute(`SELECT * FROM USERS WHERE HANDLE = :handle`, [req.body.handle]);
+        let query = `SELECT * FROM USERS WHERE HANDLE = :handle`;
+        result = await executeQuery(query, [req.body.handle]);
         if(result.rows.length == 0){
             return res.status(400).send({error: "No such user"});
         }
         if(await bcrypt.compare(req.body.pass, result.rows[0][2])){
-            await conn.execute(`UPDATE USERS SET LAST_LOGIN = TO_DATE(:now, 'DD/MM/YYYY') WHERE HANDLE = :handle`, [moment().format("DD/MM/YYYY"), req.body.handle]);
+            query = `UPDATE USERS SET LAST_LOGIN = TO_DATE(:now, 'DD/MM/YYYY') WHERE HANDLE = :handle`;
+            await executeQuery(query, [moment().format("DD/MM/YYYY"), req.body.handle]);
             const accessToken = jwt.sign({handle: req.body.handle}, process.env.SECRET_KEY, {expiresIn: '5m'});
             res.json({ accessToken: accessToken });
         }
         else{
             return res.status(400).send({error: "Wrong password"})
-            console.log('wrong password');
         }
     }catch(err) {
         console.log(err);
         res.status(500).send();
-    }finally{
-        try{
-            conn.close();
-        }catch(err){
-            console.log(err);
-        }
     }
 })
 export default router;
