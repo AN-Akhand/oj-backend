@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import oracledb from 'oracledb';
 dotenv.config();
+oracledb.autoCommit = true;
 
 export async function executeQuery(query, values){
     let conn;
