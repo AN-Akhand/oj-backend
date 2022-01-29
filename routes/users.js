@@ -95,9 +95,9 @@ router.post('/login', async (req, res) => {
             return res.status(400).send({error: "No such user"});
         }
         if(await bcrypt.compare(req.body.pass, result.rows[0][2])){
-            query = `UPDATE USERS SET LAST_LOGIN = TO_DATE(:now, 'DD/MM/YYYY') WHERE HANDLE = :handle`;
-            await executeQuery(query, [moment().format("DD/MM/YYYY"), req.body.handle]);
-            const accessToken = jwt.sign({handle: req.body.handle}, process.env.SECRET_KEY, {expiresIn: '5m'});
+            query = `UPDATE USERS SET LAST_LOGIN = TO_DATE(:now, 'DD/MM/YYYY HH24:MI:SS') WHERE HANDLE = :handle`;
+            await executeQuery(query, [moment().format("DD/MM/YYYY HH:mm:ss"), req.body.handle]);
+            const accessToken = jwt.sign({handle: req.body.handle}, process.env.SECRET_KEY, {expiresIn: '30m'});
             res.json({ accessToken: accessToken });
         }
         else{

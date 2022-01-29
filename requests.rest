@@ -21,7 +21,7 @@ POST http://localhost:5000/users/login/
 Content-Type: application/json
 
 {
-    "handle": "bleh",
+    "handle": "blah",
     "pass": "Bleh"
 }
 
@@ -29,6 +29,19 @@ Content-Type: application/json
 
 
 GET http://localhost:5000/contests
+
+###
+
+POST http://localhost:5000/contests/create
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJibGFoIiwiaWF0IjoxNjQzNDg0MTQ4LCJleHAiOjE2NDM0ODU5NDh9.07H_cx2m_bo7ZHvjaTwoGXtsCwp1CuQnsOUAzJxaGS4
+Content-Type: application/json
+
+{
+    "title": "A Contest",
+    "start_time": 1643462160277,
+    "end_time": 1643464534796,
+    "announcement": "sdsjdgfshjfbsdfbsdmnfsbjfeyfmsnfb snfsbnfsefnse sej sejfhbsnmf efhsb nsfshefbshjfbs sefj sjekfgs efse"
+}
 
 ###
 
