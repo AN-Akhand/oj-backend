@@ -60,7 +60,7 @@ router.post('/signup', async (req, res) => {
         res.status(500).send({error: "server internal error1"})
     }
     try{
-        const insertUser = `INSERT INTO users(handle, name, password, email, country, institute) VALUES(:handle, :name, :password, :email, :country, :institute)`
+        const insertUser = `INSERT INTO users(handle, name, password, email, country, institute) VALUES(:handle, :name, :password, :email, :country, :institute)`;
         const finalResult = await executeQuery(insertUser, user);
         res.status(201).send({message: "Sign Up Successful..."})
     }catch (err){

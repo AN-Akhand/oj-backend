@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import userRouter from './routes/users.js';
+import contestRouter from './routes/contests.js';
+import problemRouter from './routes/problems.js';
+import blogRouter from './routes/blogs.js'
 import cors from "cors";
 import oracledb from 'oracledb';
 
@@ -24,5 +27,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', userRouter);
+app.use('/contests', contestRouter);
+app.use('/problems', problemRouter);
+app.use('/blogs', blogRouter);
 
 let server = app.listen(PORT);

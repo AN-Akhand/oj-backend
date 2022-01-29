@@ -1,7 +1,5 @@
-GET http://localhost:5000/users/akash
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJha2FzaCIsImlhdCI6MTY0MzIwNTA2MCwiZXhwIjoxNjQzMjA1MzYwfQ.snNf-nUvx83Xl7b-DRTkLwpOkC1x-xWeVxwPPIZngJw
-
-#Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJibGFoIiwiaWF0IjoxNjQyMzQwMTM2LCJleHAiOjE2NDIzNDA0MzZ9.SoyROHLRbgBm1I_0JjHjSPwtRCraYneJtBQHadb7zek
+GET http://localhost:5000/users/bleh
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJibGFoIiwiaWF0IjoxNjQyMzQwMTM2LCJleHAiOjE2NDIzNDA0MzZ9.SoyROHLRbgBm1I_0JjHjSPwtRCraYneJtBQHadb7zek
 
 ###
 
@@ -9,11 +7,12 @@ POST http://localhost:5000/users/signup/
 Content-Type: application/json
 
 {
-    "handle": "akash",
-    "name": "Akash Ahmed",
-    "pass": "password",
-    "last_login": null,
-    "email": null
+    "handle": "unga",
+    "name": "bunga",
+    "password": "Bleh",
+    "email": null,
+    "country": "Bangladesh",
+    "institute": "TEUB"
 }
 
 ###
@@ -22,7 +21,20 @@ POST http://localhost:5000/users/login/
 Content-Type: application/json
 
 {
-    "handle": "akash",
-    "pass": "password"
+    "handle": "bleh",
+    "pass": "Bleh"
 }
 
+###
+
+
+GET http://localhost:5000/contests
+
+###
+
+GET http://localhost:5000/problems
+
+
+###
+
+GET http://localhost:5000/blogs
