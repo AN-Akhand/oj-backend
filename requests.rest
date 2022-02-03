@@ -33,7 +33,7 @@ GET http://localhost:5000/contests
 ###
 
 POST http://localhost:5000/contests/create
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJibGFoIiwiaWF0IjoxNjQzNDg0MTQ4LCJleHAiOjE2NDM0ODU5NDh9.07H_cx2m_bo7ZHvjaTwoGXtsCwp1CuQnsOUAzJxaGS4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJibGFoIiwiaWF0IjoxNjQzOTE4NTk1LCJleHAiOjE2NDM5MjAzOTV9.eVYmZYJAilau-qmGkNzDTIx_ezkTs6vRyr9LB4iS8_A
 Content-Type: application/json
 
 {
@@ -47,6 +47,134 @@ Content-Type: application/json
 
 GET http://localhost:5000/problems
 
+###
+
+
+POST http://localhost:5000/problems/create
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJibGFoIiwiaWF0IjoxNjQzOTIwNTU5LCJleHAiOjE2NDM5MjIzNTl9.lOxslXau6ZXkDhEwOc3Hivp0-2osw5syKx-VlAL9dRo
+Content-Type: application/json
+
+{
+    "contestId": 22,
+    "name": "Chessboard and Queens",
+    "problemID": "-1",
+    "problemNo": "A",
+    "timeLimit": 1,
+    "difficulty": 1500,
+    "memoryLimit": 512,
+    "statement": "Your task is to place eight queens on a chessboard so that no two queens are attacking each other. As an additional challenge, each square is either free or reserved, and you can only place queens on the free squares. However, the reserved squares do not prevent queens from attacking each other.\r\n\r\n**How many possible ways are there to place the queens?**\r\n\r\n###Input\r\n\r\nThe input has eight lines, and each of them has eight characters. Each square is either free (.) or reserved (*).\r\n\r\n###Output\r\n\r\nPrint one integer: the number of ways you can place the queens.",
+    "sampleInputs": [
+        {
+            "fileName": "sample_input.txt",
+            "data": "........\r\n........\r\n..*.....\r\n........\r\n........\r\n.....**.\r\n...*....\r\n........"
+        }
+    ],
+    "sampleOutputs": [
+        {
+            "fileName": "sample_output.txt",
+            "data": "65"
+        }
+    ],
+    "inputs": [
+        {
+            "fileName": "test_input (1).txt",
+            "data": "........\n........\n........\n........\n........\n........\n........\n....*...\n"
+        },
+        {
+            "fileName": "test_input (2).txt",
+            "data": ".......*\n........\n..*.....\n........\n........\n........\n........\n......**\n"
+        },
+        {
+            "fileName": "test_input (3).txt",
+            "data": "...**...\n......*.\n*....*..\n...*...*\n....**.*\n..*.....\n.......*\n...*....\n"
+        },
+        {
+            "fileName": "test_input (4).txt",
+            "data": "*.*...**\n..*.....\n.*.*...*\n........\n....*...\n......*.\n...*....\n..*.*...\n"
+        },
+        {
+            "fileName": "test_input (5).txt",
+            "data": ".......*\n.....*..\n.*...*..\n.**..*.*\n.......*\n...*....\n*.*.*...\n.*.*.*..\n"
+        },
+        {
+            "fileName": "test_input (6).txt",
+            "data": "....**.*\n...*.*..\n.*..***.\n.*.**...\n.**.*.*.\n..***...\n.......*\n....*.**\n"
+        },
+        {
+            "fileName": "test_input (7).txt",
+            "data": "*..*.*..\n....*...\n........\n*.......\n.*....**\n*.**..*.\n**.*.*..\n.*.*....\n"
+        },
+        {
+            "fileName": "test_input (8).txt",
+            "data": "*..**...\n.*..**..\n*.*.....\n*.*..**.\n.*..***.\n*...*...\n.******.\n*....*..\n"
+        },
+        {
+            "fileName": "test_input (9).txt",
+            "data": "***.*..*\n.***..*.\n..**....\n..*****.\n...*...*\n.****.**\n.....*.*\n*....***\n"
+        },
+        {
+            "fileName": "test_input.txt",
+            "data": "........\n........\n........\n........\n........\n........\n........\n........\n"
+        }
+    ],
+    "outputs": [
+        {
+            "fileName": "test_output (1).txt",
+            "data": "74\n"
+        },
+        {
+            "fileName": "test_output (2).txt",
+            "data": "72\n"
+        },
+        {
+            "fileName": "test_output (3).txt",
+            "data": "11\n"
+        },
+        {
+            "fileName": "test_output (4).txt",
+            "data": "13\n"
+        },
+        {
+            "fileName": "test_output (5).txt",
+            "data": "10\n"
+        },
+        {
+            "fileName": "test_output (6).txt",
+            "data": "2\n"
+        },
+        {
+            "fileName": "test_output (7).txt",
+            "data": "2\n"
+        },
+        {
+            "fileName": "test_output (8).txt",
+            "data": "1\n"
+        },
+        {
+            "fileName": "test_output (9).txt",
+            "data": "1\n"
+        },
+        {
+            "fileName": "test_output.txt",
+            "data": "92\n"
+        }
+    ],
+    "category": [
+        "Ad Hoc"
+    ],
+    "input": [
+        {
+            "key": 0,
+            "ip": "........\r\n........\r\n..*.....\r\n........\r\n........\r\n.....**.\r\n...*....\r\n........"
+        }
+    ],
+    "output": [
+        {
+            "key": 0,
+            "op": "65"
+        }
+    ]
+}
 
 ###
 

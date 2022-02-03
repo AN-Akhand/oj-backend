@@ -3,13 +3,14 @@ import auth from '../Middleware/auth.js';
 import { executeQuery } from '../DB/executequery.js';
 import moment from 'moment';
 import oracledb from 'oracledb';
+import fs from 'fs';
 
 const router = express.Router();
 router.use(express.json());
 
 router.get('/', async (req, res) => {
     console.log("list of contests");
-    res.send("contests");
+    res.json({bleh: "asdsd"});
 });
 
 router.post('/create', auth, async (req, res) => {
@@ -27,6 +28,12 @@ router.post('/create', auth, async (req, res) => {
                     END;`;
         let result = await executeQuery(query, {start_time, end_time, handle, title, id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }});
         let contest_id = result.outBinds.id;
+        let dir = "contests/" + contest_id;
+        if(!fs.existsSync(dir)){
+            fs.mkdirSync(dir, (err, file)=>{
+                if(err) throw err;
+            });
+        }
         query = `BEGIN
                     insert_blog(:handle, :data, :id);
                 END;`;
@@ -34,7 +41,7 @@ router.post('/create', auth, async (req, res) => {
         let blog_id = result.outBinds.id;
         query = `INSERT INTO announcements(blog_id, contest_id) VALUES(:blog_id, :contest_id)`;
         result = await executeQuery(query, {blog_id, contest_id});
-        res.sendStatus(200)
+        res.json({contestId: contest_id});
     }catch(err){
         res.sendStatus(500);
         console.error(err);
