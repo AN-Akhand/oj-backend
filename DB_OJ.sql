@@ -36,7 +36,7 @@ BEGIN
 	id := contest_seq.nextval;
 	INSERT INTO contests(contest_id, start_time, end_time, handle, title) VALUES(id, TO_DATE(start_time, 'DD/MM/YYYY HH24:MI:SS'), TO_DATE(end_time, 'DD/MM/YYYY HH24:MI:SS'), handle, title);
 END;
-
+/
 
 CREATE TABLE PROBLEMS
 (
@@ -105,7 +105,7 @@ BEGIN
 	id := blog_seq.nextval;
 	INSERT INTO blogs(blog_id, handle, data) VALUES(id, handle, data);
 END;
-
+/
 
 
 CREATE TABLE ANNOUNCEMENTS
@@ -140,9 +140,6 @@ CONSTRAINT com_b_fk FOREIGN KEY (blog_id) REFERENCES blogs,
 CONSTRAINT com_u_fk FOREIGN KEY (handle) REFERENCES users,
 CONSTRAINT comment_pk PRIMARY KEY (comment_id)
 );
-
-
-
 
 ALTER TABLE PROBLEMS ADD difficulty NUMBER;
 ALTER TABLE PROBLEMS ADD name VARCHAR(50);

@@ -64,7 +64,8 @@ router.post('/create', auth, async(req, res) => {
             categories: s
         } 
         let result = await executeQuery(query, bind);
-        res.sendStatus(200);
+        console.log("Problem created successfully! may be :D")
+        res.json({contestId: problem.contestId, problemNo: problem.problemNo});
     }catch(err){
         res.send(500);
         console.log(err);

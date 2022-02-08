@@ -17,8 +17,8 @@ router.post('/create', auth, async (req, res) => {
     let contest = req.body;
     console.log(contest);
     try{
-        let start_time = moment(contest.start_time).format("DD/MM/YYYY HH:mm:ss");
-        let end_time = moment(contest.end_time).format("DD/MM/YYYY HH:mm:ss");
+        let start_time = moment(contest.startTime).format("DD/MM/YYYY HH:mm:ss");
+        let end_time = moment(contest.endTime).format("DD/MM/YYYY HH:mm:ss");
         let handle = res.locals.handle;
         let title = contest.title;
         let data = contest.announcement;
@@ -34,6 +34,7 @@ router.post('/create', auth, async (req, res) => {
                 if(err) throw err;
             });
         }
+
         query = `BEGIN
                     insert_blog(:handle, :data, :id);
                 END;`;
@@ -41,6 +42,10 @@ router.post('/create', auth, async (req, res) => {
         let blog_id = result.outBinds.id;
         query = `INSERT INTO announcements(blog_id, contest_id) VALUES(:blog_id, :contest_id)`;
         result = await executeQuery(query, {blog_id, contest_id});
+
+        console.log("contest created successfully: ");
+        console.log(result)
+
         res.json({contestId: contest_id});
     }catch(err){
         res.sendStatus(500);

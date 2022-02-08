@@ -14,7 +14,7 @@ const app = express();
 
 app.use(cors());
 app.options('*', cors());
-app.use(express.json());
+app.use(express.json({limit: "50mb"}));
 try{
     console.log('creating connectionpool');
     await oracledb.createPool({user: process.env.DB_USER, password: process.env.DB_PASSWORD, connectionString: process.env.DB_CONN_STRING});
