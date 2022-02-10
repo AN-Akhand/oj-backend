@@ -9,8 +9,8 @@ function auth(req, res, next){
         res.locals.handle = decodedToken.handle;
         next();
     }catch(err){
-        console.log(err);
-        res.sendStatus(400);
+        console.error(err);
+        res.json({status: 'failure', message: 'Login first!'});
     }
 }
 export default auth;

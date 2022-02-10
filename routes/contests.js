@@ -8,10 +8,59 @@ import fs from 'fs';
 const router = express.Router();
 router.use(express.json());
 
-router.get('/', async (req, res) => {
-    console.log("list of contests");
-    res.json({bleh: "asdsd"});
+router.get('/contests', async (req, res) => {
+    try{
+        const query = `SELECT * FROM CONTESTS`;
+        const result = await executeQuery(query, {});
+        console.log(result)
+        let allContest = [];
+        const rows = result.rows;
+        const numOfContest = rows.length;
+        for(let i=0; i<numOfContest; i++){
+            const contest = rows[i];
+            allContest.push({
+                id: contest[0],
+                title: contest[1],
+                startTime: contest[2],
+                endTime: contest[3],
+                setter: contest[6]
+            })
+        }
+        res.json({status: 'success', contests: allContest})
+    }catch (e) {
+        console.error(e)
+        res.json({status: 'failure', reason: e})
+    }
 });
+
+router.post('/get', async (req, res) => {
+    // console.log("eitay eshe disturb ditese?")
+    let contestId = req.body.contestId;
+    console.log(req.body)
+    try{
+        const query = `SELECT * FROM CONTESTS WHERE CONTEST_ID = :contestId`;
+        const result = await executeQuery(query, {contestId});
+        console.log(result)
+
+        console.log("tends to success")
+        if(result.rows.length < 1){
+            res.json({status: 'failed', message: 'no such contest found!'})
+        }
+        const contest = result.rows[0];
+        const contestData = {
+            contestId: contest[0],
+            title: contest[1],
+            startTime: contest[2],
+            endTime: contest[3],
+            setter: contest[6],
+        }
+
+        res.json({status: 'success', message: contestData});
+    }catch (error){
+        console.error(error);
+        res.status(404)
+    }
+})
 
 router.post('/create', auth, async (req, res) => {
     let contest = req.body;

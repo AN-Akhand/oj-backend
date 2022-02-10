@@ -2,6 +2,7 @@ import express from 'express';
 import auth from '../Middleware/auth.js';
 import { executeQuery } from '../DB/executequery.js';
 import fs from 'fs';
+import {getSampleInputs, getSampleOutputs, getStatement} from '../util/fileIO.js'
 
 const router = express.Router();
 router.use(express.json());
@@ -9,6 +10,32 @@ router.use(express.json());
 router.get('/', async (req, res) => {
     console.log("list of problems");
     res.send("problems");
+})
+
+router.post('/contestProblem', async (req, res) => {
+    console.log(req.body)
+    const contestId = req.body.contestId;
+    try{
+        const query = `SELECT * FROM PROBLEMS WHERE CONTEST_ID = :contestId`;
+        const result = await executeQuery(query, {contestId})
+        const problems = []
+        const numOfProblems = result.rows.length;
+        for(let i=0; i<numOfProblems; i++){
+            const problem = result.rows[i];
+            problems.push({
+                problemNo: problem[0],
+                contestId: contestId,
+                name: problem[8],
+                difficulty: problem[7],
+                tries: problem[6],
+                solve: problem[9]
+            })
+        }
+        res.json({status: 'success', message: problems})
+    }catch (error){
+        console.error(error)
+        res.json({status: 'failure', message: error})
+    }
 })
 
 router.post('/create', auth, async(req, res) => {
@@ -72,4 +99,33 @@ router.post('/create', auth, async(req, res) => {
     }
 })
 
+router.post('/problemDetail', async (req, res) => {
+    const contestId = req.body.contestId;
+    const problemId = req.body.problemId;
+    console.log(contestId, problemId)
+    const query = `SELECT * FROM PROBLEMS WHERE PROBLEM_ID =: problemId AND CONTEST_ID = :contestId`;
+    try{
+        const result = await executeQuery(query, {problemId, contestId})
+
+        if(result.rows.length !== 1){
+            res.json({status:'failed', message: 'no such problem found'})
+            return
+        }
+        const problem = result.rows[0];
+        // console.log(result)
+        const problemDetail = {
+            name: problem[8],
+            timeLimit: problem[1],
+            memoryLimit: problem[2],
+            statement: await getStatement(contestId, problemId),
+            input: await getSampleInputs(contestId, problemId),
+            output: await getSampleOutputs(contestId, problemId)
+        }
+
+        // console.log(problemDetail)
+        res.json({status: 'success', problem: problemDetail})
+    }catch (error){
+        res.json({status: 'failed', message: error})
+    }
+})
 export default router;
