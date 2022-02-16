@@ -46,19 +46,26 @@ Content-Type: application/json
 ###
 
 GET http://localhost:5000/problems
+Content-Type: application/json
 
+{
+    "sortBy": "difficulty",
+    "category": [
+        "ad hoc"
+    ]
+}
 ###
 
 
 POST http://localhost:5000/problems/create
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJibGFoIiwiaWF0IjoxNjQzOTIwNTU5LCJleHAiOjE2NDM5MjIzNTl9.lOxslXau6ZXkDhEwOc3Hivp0-2osw5syKx-VlAL9dRo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1MDI0OTExLCJleHAiOjE2NDUwMjY3MTF9.uhTdqkeUJ0JGeRtFpIFg9PkTdp_Yfzbg9jPVUUg0EPw
 Content-Type: application/json
 
 {
     "contestId": 22,
-    "name": "Chessboard and Queens",
+    "name": "Something",
     "problemID": "-1",
-    "problemNo": "A",
+    "problemNo": "B",
     "timeLimit": 1,
     "difficulty": 1500,
     "memoryLimit": 512,
@@ -160,7 +167,9 @@ Content-Type: application/json
         }
     ],
     "category": [
-        "Ad Hoc"
+        "Ad Hoc",
+        "Dynamic Programming",
+        "Math"
     ],
     "input": [
         {

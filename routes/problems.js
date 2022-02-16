@@ -8,8 +8,38 @@ const router = express.Router();
 router.use(express.json());
 
 router.get('/', async (req, res) => {
-    console.log("list of problems");
-    res.send("problems");
+    console.log(req.body);
+    try{
+        let query = `SELECT problem_id, contest_id, name, categories, difficulty, tries, solves FROM problems `;
+        if(req.body.category.length > 0){
+            query = query + "WHERE ";
+        }
+        req.body.category.forEach(c=>{
+            query = query + `LOWER(categories) LIKE LOWER('%${c}%') AND `;
+        })
+        if(req.body.category.length > 0){
+            query = query.slice(0, -4);
+        }
+        query = query + `ORDER BY ${req.body.sortBy}`;
+        let result = await executeQuery(query, {});
+        let problems = [];
+        result.rows.forEach(r=>{
+            let categories = r[3].split('/');
+            problems.push({
+                problemNo: r[0],
+                contestId: r[1],
+                name: r[2],
+                category: categories,
+                difficulty: r[4],
+                tries: r[5],
+                solve: r[6]
+            })
+        })
+        res.send(problems);
+    }catch(err){
+        console.log(err);
+        res.json({status: 'failure', message: err})
+    }
 })
 
 router.post('/contestProblem', async (req, res) => {
