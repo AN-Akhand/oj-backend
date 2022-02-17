@@ -30,11 +30,11 @@ ALTER TABLE contests MODIFY title VARCHAR(255) UNIQUE NOT NULL;
 
 CREATE SEQUENCE contest_seq;
 
-CREATE OR REPLACE PROCEDURE insert_contest(start_time IN VARCHAR2, end_time IN VARCHAR2, handle IN VARCHAR2, title IN VARCHAR2, id OUT NUMBER)
+CREATE OR REPLACE PROCEDURE insert_contest(start_time IN NUMBER, end_time IN NUMBER, handle IN VARCHAR2, title IN VARCHAR2, id OUT NUMBER)
 IS
 BEGIN
 	id := contest_seq.nextval;
-	INSERT INTO contests(contest_id, start_time, end_time, handle, title) VALUES(id, TO_DATE(start_time, 'DD/MM/YYYY HH24:MI:SS'), TO_DATE(end_time, 'DD/MM/YYYY HH24:MI:SS'), handle, title);
+	INSERT INTO contests(contest_id, start_time, end_time, handle, title) VALUES(id, start_time, end_time, handle, title);
 END;
 /
 
@@ -153,7 +153,7 @@ ALTER TABLE PROBLEMS ADD SOLVES NUMBER DEFAULT 0;
 UPDATE PROBLEMS SET SOLVES = 0 WHERE 1=1;
 
 
-lter table contests drop column START_TIME;
+alter table contests drop column START_TIME;
 alter table contests drop column END_TIME;
 ALTER TABLE CONTESTS ADD START_TIME NUMBER;
 ALTER TABLE CONTESTS ADD END_TIME NUMBER;
