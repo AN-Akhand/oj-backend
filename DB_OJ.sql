@@ -85,15 +85,16 @@ CONSTRAINT submission_pk PRIMARY KEY (submission_id)
 
 
 --egulao kora lagbe tomar
+--korechi
 CREATE SEQUENCE sub_seq;
 
 CREATE OR REPLACE PROCEDURE insert_sub(handle IN VARCHAR2, contestId IN NUMBER, problemId IN VARCHAR2, subTime IN VARCHAR2, id OUT NUMBER)
 IS
 BEGIN
 	id := sub_seq.nextval;
-	INSERT INTO submissions(handle, contest_id, problem_id, submission_id, sub_time) VALUES(handle, contestId, problemId, id, subTime);
+	INSERT INTO submissions(handle, contest_id, problem_id, submission_id, sub_time, verdict) VALUES(handle, contestId, problemId, id, subTime, 'testing');
 END;
-
+/
 
 
 
@@ -159,6 +160,7 @@ ALTER TABLE PROBLEMS DROP COLUMN TEST_CASE;
 
 
 --TO BE UPDATED IN MOBASWIR'S END
+--done
 ALTER TABLE PROBLEMS DROP COLUMN SOLVE;
 ALTER TABLE PROBLEMS ADD SOLVES NUMBER DEFAULT 0;
 UPDATE PROBLEMS SET SOLVES = 0 WHERE 1=1;
@@ -170,6 +172,7 @@ ALTER TABLE CONTESTS ADD START_TIME NUMBER;
 ALTER TABLE CONTESTS ADD END_TIME NUMBER;
 
 --egula koiro
+--done
 ALTER TABLE SUBMISSIONS DROP COLUMN SUB_TIME;
 ALTER TABLE SUBMISSIONS ADD SUB_TIME NUMBER;
 ALTER TABLE SUBMISSIONS DROP COLUMN LANGUAGE;
