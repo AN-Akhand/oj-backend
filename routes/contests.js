@@ -21,9 +21,9 @@ router.get('/contests', async (req, res) => {
             allContest.push({
                 id: contest[0],
                 title: contest[1],
-                startTime: contest[2],
-                endTime: contest[3],
-                setter: contest[6]
+                startTime: contest[5],
+                endTime: contest[6],
+                setter: contest[4]
             })
         }
         res.json({status: 'success', contests: allContest})
@@ -50,9 +50,9 @@ router.post('/get', async (req, res) => {
         const contestData = {
             contestId: contest[0],
             title: contest[1],
-            startTime: contest[2],
-            endTime: contest[3],
-            setter: contest[6],
+            startTime: contest[5],
+            endTime: contest[6],
+            setter: contest[4],
         }
 
         res.json({status: 'success', message: contestData});
@@ -66,8 +66,8 @@ router.post('/create', auth, async (req, res) => {
     let contest = req.body;
     console.log(contest);
     try{
-        let start_time = moment(contest.startTime).format("DD/MM/YYYY HH:mm:ss");
-        let end_time = moment(contest.endTime).format("DD/MM/YYYY HH:mm:ss");
+        let start_time = contest.startTime;
+        let end_time = contest.endTime;
         let handle = res.locals.handle;
         let title = contest.title;
         let data = contest.announcement;
