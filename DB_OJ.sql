@@ -84,6 +84,17 @@ CONSTRAINT submission_pk PRIMARY KEY (submission_id)
 );
 
 
+--egulao kora lagbe tomar
+CREATE SEQUENCE sub_seq;
+
+CREATE OR REPLACE PROCEDURE insert_sub(handle IN VARCHAR2, contestId IN NUMBER, problemId IN VARCHAR2, subTime IN VARCHAR2, id OUT NUMBER)
+IS
+BEGIN
+	id := sub_seq.nextval;
+	INSERT INTO submissions(handle, contest_id, problem_id, submission_id, sub_time) VALUES(handle, contestId, problemId, id, subTime);
+END;
+
+
 
 
 CREATE TABLE BLOGS
@@ -157,3 +168,10 @@ alter table contests drop column START_TIME;
 alter table contests drop column END_TIME;
 ALTER TABLE CONTESTS ADD START_TIME NUMBER;
 ALTER TABLE CONTESTS ADD END_TIME NUMBER;
+
+--egula koiro
+ALTER TABLE SUBMISSIONS DROP COLUMN SUB_TIME;
+ALTER TABLE SUBMISSIONS ADD SUB_TIME NUMBER;
+ALTER TABLE SUBMISSIONS DROP COLUMN LANGUAGE;
+ALTER TABLE SUBMISSIONS ADD VERDICT VARCHAR2(15);
+

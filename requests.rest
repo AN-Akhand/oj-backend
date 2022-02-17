@@ -33,15 +33,14 @@ GET http://localhost:5000/contests
 ###
 
 POST http://localhost:5000/contests/create
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1MTI2OTM5LCJleHAiOjE2NDUxMjg3Mzl9.8eo8NAVpS0kFPnkXxFlBFMxJt3q4MG4m5CB9twnmW4w
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJibGFoIiwiaWF0IjoxNjQzOTE4NTk1LCJleHAiOjE2NDM5MjAzOTV9.eVYmZYJAilau-qmGkNzDTIx_ezkTs6vRyr9LB4iS8_A
 Content-Type: application/json
 
 {
-  "title": "titi",
-  "startTime": "1645126148232",
-  "endTime": "1645126740000",
-  "duration": 591768,
-  "announcement": "Your task is to place eight queens on a chessboard so that no two queens are attacking each other. As an additional challenge, each square is either free or reserved, and you can only place queens on the free squares. However, the reserved squares do not prevent queens from attacking each other.\r\n\r\n**How many possible ways are there to place the queens?**\r\n\r\n###Input\r\n\r\nThe input has eight lines, and each of them has eight characters. Each square is either free (.) or reserved (*).\r\n\r\n###Output\r\n\r\nPrint one integer: the number of ways you can place the queens."
+    "title": "A Contest",
+    "start_time": 1643462160277,
+    "end_time": 1643464534796,
+    "announcement": "sdsjdgfshjfbsdfbsdmnfsbjfeyfmsnfb snfsbnfsefnse sej sejfhbsnmf efhsb nsfshefbshjfbs sefj sjekfgs efse"
 }
 
 ###
@@ -188,11 +187,26 @@ Content-Type: application/json
 
 ###
 
+
+
+POST http://localhost:5000/problems/submit
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1MTMxMjk4LCJleHAiOjE2NDUxMzMwOTh9.24NZimEfazqK0i2UgNafgg3hdddTXLg3wlM-oTbuRyU
+Content-Type: application/json
+
+{
+    "contestId": 22,
+    "problemId": "A",
+    "code": "#include <deeznuts>",
+    "time": "1645131811708"
+}
+
+###
+
 GET http://localhost:5000/blogs
 
 ###
 POST http://localhost:5000/problems/problemDetail
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ0NTIzMjI4LCJleHAiOjE2NDQ1MjUwMjh9.X5ARKuKo305WkBE9p8tGtki_frilNQ5VDKAP129M5uo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1MTI3NDY5LCJleHAiOjE2NDUxMjkyNjl9.1fVnV9DBq_AnClOW9O1xds-5Nm94LWP7Dxzju9gos14
 Content-Type: application/json
 
 {

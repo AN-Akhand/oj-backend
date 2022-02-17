@@ -3,6 +3,7 @@ import auth from '../Middleware/auth.js';
 import { executeQuery } from '../DB/executequery.js';
 import fs from 'fs';
 import {getSampleInputs, getSampleOutputs, getStatement} from '../util/fileIO.js'
+import oracledb from 'oracledb';
 
 const router = express.Router();
 router.use(express.json());
@@ -78,6 +79,7 @@ router.post('/create', auth, async(req, res) => {
             fs.mkdirSync(dir + "/outputs");
             fs.mkdirSync(dir + "/sampleInputs");
             fs.mkdirSync(dir + "/sampleOutputs");
+            fs.mkdirSync(dir + "/submissions");
         }
         fs.writeFile(dir + "/statement.md", problem.statement, (err, file)=>{
             if(err) throw err;
@@ -158,4 +160,50 @@ router.post('/problemDetail', async (req, res) => {
         res.json({status: 'failed', message: error})
     }
 })
+
+
+router.post('/submit', auth, async (req, res)=>{
+    let sub = req.body;
+    console.log(sub);
+    try{
+    let handle = res.locals.handle;
+    let contestId = sub.contestId;
+    let problemId = sub.problemId;
+    let subTime = sub.time;
+    let query = `BEGIN 
+                    insert_sub(:handle, :contestId, :problemId, :subTime, :id);
+                END;`;
+    let result = await executeQuery(query, {handle, contestId, problemId, subTime, id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }});
+    let subId = result.outBinds.id;
+    let dir = "contests/" + sub.contestId + "/" + sub.problemId + "/submissions/" + subId;
+    if(!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
+    fs.writeFile(dir + "/main.cpp", sub.code, (err, file) =>{
+        if(err) throw err;
+    })
+
+    //testtesttest
+    let verdict = "ac"
+    query = `UPDATE SUBMISSIONS SET VERDICT = :verdict WHERE SUBMISSION_ID = :subId`;
+    result = await executeQuery(query, {verdict, subId});
+
+    query = `SELECT end_time FROM contests WHERE contest_id = :contestId`;
+    result = await executeQuery(query, {contestId});
+    let endTime = result.rows[0][0];
+    if(endTime < subTime){
+        res.send("end of contest");
+    }
+    else{
+        //do stuff
+    }
+
+    }catch(err){
+        console.log(err);
+        res.json({status: 'failed', message: err});
+    }
+})
+
+
+
 export default router;
