@@ -221,6 +221,14 @@ router.post('/submit', auth, async (req, res)=>{
 			query = `UPDATE SUBMISSIONS SET VERDICT = :verdict, VERDICT_DETAIL = :detail WHERE SUBMISSION_ID = :subId`;
 			result = await executeQuery(query, {verdict, detail, subId});
 			await checkAndUpdateContestStanding(contestId, subTime, handle, finalVerdict.verdict)
+			if(verdict == 'AC'){
+				query = `UPDATE PROBLEMS SET TRIES = TRIES + 1, SOLVES = SOLVES + 1 
+				WHERE CONTEST_ID = :contestId AND PROBLEM_ID = :problemId`;
+			}
+			else{
+				query = `UPDATE PROBLEMS SET TRIES = TRIES + 1 WHERE CONTEST_ID = :contestId AND PROBLEM_ID = :problemId`;
+			}
+			result = await executeQuery(query, {contestId, problemId});
 		});
 
 		res.json({status: 'success', message: {verdict: 'testing', submissionId: subId}})

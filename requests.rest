@@ -118,7 +118,7 @@ Content-Type: application/json
 
 
 POST http://localhost:5000/problems/submit
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1MTg0OTA2LCJleHAiOjE2NDUxODY3MDZ9.uyZpIBSdIVghp707HX3gEAldQ9a4I6gkra3O2ttjMFA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1MjAzNDAxLCJleHAiOjE2NDUyMDUyMDF9.2oJoOWNinIsmYihtBwAqrgOIXJ446wcB-6P9xrYkanU
 Content-Type: application/json
 
 {
