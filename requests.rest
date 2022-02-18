@@ -118,14 +118,14 @@ Content-Type: application/json
 
 
 POST http://localhost:5000/problems/submit
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1MTM5ODU5LCJleHAiOjE2NDUxNDE2NTl9.p4gjdM_ywGjEpR1StyEl7mxkg_eWJ6zVwE63_z3rdzw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1MTg0OTA2LCJleHAiOjE2NDUxODY3MDZ9.uyZpIBSdIVghp707HX3gEAldQ9a4I6gkra3O2ttjMFA
 Content-Type: application/json
 
 {
-  "contestId": 69,
-  "problemId": 3,
+  "contestId": 22,
+  "problemId": "A",
   "code": "#inclde <bits/stdc++.h>\r\n// #include \"Edge.cpp\"\r\nusing namespace std;\r\n\r\nclass DijkstraVertex{\r\npublic:\r\n    int vertexNo;\r\n    int p;\r\n    long long int d;\r\n    DijkstraVertex(int vn){\r\n        vertexNo = vn;\r\n        p = -1;\r\n        d = LONG_LONG_MAX;\r\n    }\r\n    DijkstraVertex(){\r\n        vertexNo = -1;\r\n        p = -1;\r\n        d = LONG_LONG_MAX;\r\n    }\r\n    void print(){\r\n        cout<<\"Vertex No: \"<<vertexNo<<\", P: \"<<p<<\", D: \"<<d<<endl;\r\n    }\r\n};\r\nclass ascComparatorDijkVertex{\r\npublic:\r\n    bool operator() (const DijkstraVertex& v1, const DijkstraVertex& v2){\r\n        return v1.d > v2.d;\r\n    }\r\n};\r\n\r\nvector<DijkstraVertex> dijkstra(int n, const vector<vector<pair<int, long long int> > > & adj, int s){\r\n    vector<DijkstraVertex> vertex(n+1);\r\n    for(int i=0; i<=n; i++){\r\n        vertex[i].vertexNo = i;\r\n        vertex[i].d = LONG_LONG_MAX;\r\n        vertex[i].p = -1;\r\n    }\r\n    vertex[s].d = 0;\r\n    priority_queue<DijkstraVertex, vector<DijkstraVertex>, ascComparatorDijkVertex> q;\r\n    q.push(vertex[s]);\r\n    while(!q.empty()){\r\n        DijkstraVertex dv = q.top();\r\n        q.pop();\r\n\t\tif(vertex[dv.vertexNo].d < dv.d) continue;\r\n        // cout<<\"Popped: \";\r\n        // dv.print();\r\n        int size = adj[dv.vertexNo].size();\r\n        for(int i=0; i<size; i++){\r\n            if(vertex[adj[dv.vertexNo][i].first].d > dv.d + adj[dv.vertexNo][i].second){\r\n                vertex[adj[dv.vertexNo][i].first].d = dv.d + adj[dv.vertexNo][i].second;\r\n                vertex[adj[dv.vertexNo][i].first].p = dv.vertexNo;\r\n                // cout<<\"Pushing: \";\r\n                // vertex[adj[dv.vertexNo][i].first].print();\r\n                q.push(vertex[adj[dv.vertexNo][i].first]);\r\n            }\r\n        }\r\n    }\r\n    return vertex;\r\n}\r\n\r\nvoid printPath(vector<DijkstraVertex>& vertexes, int s, int t){\r\n    vector<int> path;\r\n    int tt = t;\r\n    while(vertexes[t].p != -1){\r\n        path.push_back(vertexes[t].p);\r\n        t = vertexes[t].p;\r\n    }\r\n    reverse(path.begin(), path.end());\r\n    int sz = path.size();\r\n    for(int i=0; i<sz; i++)cout<<path[i]<<\" -> \";\r\n    cout<<tt<<endl;\r\n}\r\n\r\nint main()\r\n{\r\n    int n, m;\r\n    cin>>n>>m;\r\n    vector<vector<pair<int, long long int> > > adj(n+1);\r\n    for(int i=0; i<m; i++){\r\n        int x, y;\r\n        long long int w;\r\n        cin>>x>>y>>w;\r\n        adj[x].push_back(make_pair(y, w));\r\n    }\r\n\r\n    // for(int i=0; i<n; i++){\r\n    //     cout<<i<<\": \";\r\n    //     for(int j=0; j<adj[i].size(); j++){\r\n    //         cout<<adj[i][j].first<<\"-\"<<adj[i][j].second<<\", \";\r\n    //     }\r\n    //     cout<<endl;\r\n    // }\r\n\r\n    int s, t;\r\n    // cin>>s>>t;\r\n    vector<DijkstraVertex> ans = dijkstra(n, adj, 1);\r\n    for(int i=1; i<=n; i++){\r\n        cout<<ans[i].d<<\" \";\r\n    }\r\n    // for(int i=0; i<n; i++){\r\n    //     ans[i].print();\r\n    // }\r\n    // cout<<\"Shortest path cost: \"<<ans[t].d<<endl;\r\n    // printPath(ans, s, t);\r\n}",
-  "time": "1645138405500"
+  "time": "1645184848074"
 }
 
 ###

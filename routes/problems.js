@@ -201,15 +201,38 @@ router.post('/submit', auth, async (req, res)=>{
 		}
 		const timeLimit = result.rows[0][0] * 1000;
 		console.log(timeLimit)
-
+		let verdict = '';
 		test(subId, contestId, problemId, timeLimit).then(async finalVerdict => {
 			console.log(finalVerdict)
-			const verdict = finalVerdict.verdict;
+			verdict = finalVerdict.verdict;
 			let detail = 'AC';
 			if(finalVerdict.verdict !== 'AC') detail = finalVerdict.reason.substr(0, 1999);
+			console.log(detail);
 			query = `UPDATE SUBMISSIONS SET VERDICT = :verdict, VERDICT_DETAIL = :detail WHERE SUBMISSION_ID = :subId`;
 			result = await executeQuery(query, {verdict, detail, subId});
 		});
+		query = `SELECT end_time, start_time FROM CONTESTS WHERE contest_id = :contestId`;
+		let contest = await executeQuery(query, {contestId});
+		let endTime = contest.rows[0][0];
+		let startTime = contest.rows[0][1];
+		if(parseInt(endTime) > parseInt(subTime)){
+			query = `SELECT handle FROM standings WHERE CONTEST_ID = :contestId AND handle = :handle`;
+			result = await executeQuery(query, {contestId, handle});
+			if(result.rows.length == 0){
+				query = `INSERT INTO standings(contest_id, handle) VALUES(:contestId, :handle)`;
+				result = executeQuery(query, {contestId, handle}); 
+			}
+			let penalty = (endTime - parseInt(subTime)) / (endTime - startTime) * 50;
+			if(verdict == 'AC'){
+				query = `UPDATE standings SET penalty = penalty + :penalty, ac_problems = ac_problems + 1 
+						WHERE contest_id = :contestId AND handle = :handle`;
+			}
+			else{
+				query = `UPDATE standings SET penalty = penalty + :penalty, wrong_subs = wrong_subs + 1 
+						WHERE contest_id = :contestId AND handle = :handle`;
+			}
+			result = await executeQuery(query, {penalty, contestId, handle});
+		}
 		res.json({status: 'success', message: {verdict: 'testing', submissionId: subId}})
     }catch(err){
 		console.log(err);
