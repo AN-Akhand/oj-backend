@@ -58,7 +58,7 @@ async function meoRun(submissionID, directory, numOfTestCase, timeLimit) {
             const meoResult = meoFC(userOut, testAcc);
             verdict.verdict = meoResult.verdict;
             if(meoResult.verdict === 'WA') {
-                res.reason = meoResult.reason;
+                verdict.reason = meoResult.reason;
                 finalVerdict.verdict = 'WA';
                 finalVerdict.reason = 'WA on test: '+(i+1)
             }

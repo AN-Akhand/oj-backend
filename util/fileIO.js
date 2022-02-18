@@ -1,5 +1,4 @@
 import fs from "fs";
-import e from "express";
 
 export async function getSampleInputs(contestId, problemId) {
     return await readFromDirectory(contestId, problemId, 'sampleInputs')
@@ -11,6 +10,10 @@ export async function getSampleOutputs(contestId, problemId) {
 
 export async function getStatement(contestId, problemId){
     return fs.readFileSync('./contests/'+contestId+'/'+problemId+'/statement.md', {encoding: 'utf8', flag: 'r'})
+}
+
+export async function getSubmissionCode(contestId, problemId, submissionId){
+    return fs.readFileSync('./contests/'+contestId+'/'+problemId+'/submission/'+submissionId+'.cpp', {encoding: 'utf8', flag: 'r'})
 }
 async function readFromDirectory(contestId, problemId, iOrO) {
     const directory = './contests/'+contestId+'/'+problemId+'/'+iOrO
