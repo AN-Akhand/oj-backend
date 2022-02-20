@@ -95,9 +95,9 @@ router.post('/create', auth, async (req, res) => {
         console.log("contest created successfully: ");
         console.log(result)
 
-        res.json({contestId: contest_id});
+        res.json({status: 'success', message: {contestId: contest_id}});
     }catch(err){
-        res.sendStatus(500);
+        res.json({status: 'failure', message: err});
         console.error(err);
     }
 });

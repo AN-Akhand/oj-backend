@@ -8,24 +8,24 @@ import {test} from './../util/compiler.js'
 const router = express.Router();
 router.use(express.json());
 
-router.get('/', async (req, res) => {
+router.post('/get', async (req, res) => {
+	// console.log('eitay ashe!')
 	console.log(req.body);
 	try{
 		let query = `SELECT problem_id, contest_id, name, categories, difficulty, tries, solves FROM problems `;
 		if(req.body.category.length > 0){
 			query = query + "WHERE ";
+			req.body.category.forEach(c=>{
+				query = query + `LOWER(categories) LIKE LOWER('%${c}%') AND `;
+			})
+			query += '1 = 1';
 		}
-		req.body.category.forEach(c=>{
-			query = query + `LOWER(categories) LIKE LOWER('%${c}%') AND `;
-		})
-		if(req.body.category.length > 0){
-			query = query.slice(0, -4);
-		}
-		query = query + `ORDER BY ${req.body.sortBy}`;
+		if(req.body.sortBy) query = query + `ORDER BY ${req.body.sortBy}`;
+		// console.log(query)
 		let result = await executeQuery(query, {});
 		let problems = [];
 		result.rows.forEach(r=>{
-			let categories = r[3].split('/');
+			let categories = r[3] == null ? [] : r[3].split('/');
 			problems.push({
 				problemNo: r[0],
 				contestId: r[1],
@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
 				solve: r[6]
 			})
 		})
-		res.send(problems);
+		res.json({status: 'success', message: {problems}});
 	}catch(err){
 		console.log(err);
 		res.json({status: 'failure', message: err})
@@ -124,9 +124,9 @@ router.post('/create', auth, async(req, res) => {
 		}
 		let result = await executeQuery(query, bind);
 		console.log("Problem created successfully! may be :D")
-		res.json({contestId: problem.contestId, problemNo: problem.problemNo});
+		res.json({status: 'success', message: {contestId: problem.contestId, problemNo: problem.problemNo}});
 	}catch(err){
-		res.send(500);
+		res.json({status: 'failure', message: err});
 		console.log(err);
 	}
 })
