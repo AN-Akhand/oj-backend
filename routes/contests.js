@@ -1,7 +1,6 @@
 import express from 'express';
 import auth from '../Middleware/auth.js';
 import { executeQuery } from '../DB/executequery.js';
-import moment from 'moment';
 import oracledb from 'oracledb';
 import fs from 'fs';
 
@@ -33,11 +32,13 @@ router.get('/contests', async (req, res) => {
     }
 });
 
-router.post('/get', async (req, res) => {
+router.post('/get', auth, async (req, res) => {
     // console.log("eitay eshe disturb ditese?")
-    let contestId = req.body.contestId;
-    console.log(req.body)
     try{
+        let contestId = req.body.contestId;
+        let handle = res.locals.handle;
+        let isOwner = false;
+        console.log(req.body)
         const query = `SELECT * FROM CONTESTS WHERE CONTEST_ID = :contestId`;
         const result = await executeQuery(query, {contestId});
         console.log(result)
@@ -47,6 +48,9 @@ router.post('/get', async (req, res) => {
             res.json({status: 'failed', message: 'no such contest found!'})
         }
         const contest = result.rows[0];
+        if(handle == contest[4]){
+            isOwner = true;
+        }
         const contestData = {
             contestId: contest[0],
             title: contest[1],
@@ -55,17 +59,17 @@ router.post('/get', async (req, res) => {
             setter: contest[4],
         }
 
-        res.json({status: 'success', message: contestData});
+        res.json({status: 'success', message: contestData, owner: isOwner});
     }catch (error){
         console.error(error);
-        res.status(404)
+        res.json({status: 'failure', message: error});
     }
 })
 
 router.post('/create', auth, async (req, res) => {
-    let contest = req.body;
-    console.log(contest);
     try{
+        let contest = req.body;
+        console.log(contest);
         let start_time = contest.startTime;
         let end_time = contest.endTime;
         let handle = res.locals.handle;
@@ -101,5 +105,57 @@ router.post('/create', auth, async (req, res) => {
         console.error(err);
     }
 });
+
+
+router.post("/delete", auth, async(req, res)=>{
+    try{
+        const contestId = req.body.contestId;
+        const handle = res.locals.handle;
+        let query = `SELECT START_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId AND HANDLE = :handle`;
+        let result = await executeQuery(query, {contestId, handle});
+        if(result.rows.length == 0){
+            throw "Not Allowed";
+        }
+        if(result.rows[0][0] < Date.now()){
+            throw "Not Allowed";
+        }
+        query = `BEGIN
+                    delete_contest(:contestId);
+                END;`
+        result = await executeQuery(query, {contestId});
+        res.json({status: 'success', message: result});
+    }catch(err){
+        res.json({status: 'failure', message: err})
+        console.error(err);
+    }
+})
+
+
+
+router.post("/edit", auth, async(req, res)=>{
+    try{
+        const contestId = req.body.contestId;
+        const handle = res.locals.handle;
+        const title = req.body.title;
+        const startTime = req.body.startTime;
+        const endTime = req.body.endTime;
+        let query = `SELECT START_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId AND HANDLE = :handle`;
+        let result = await executeQuery(query, {contestId, handle});
+        if(result.rows.length == 0){
+            throw "Not Allowed";
+        }
+        if(result.rows[0][0] < Date.now()){
+            throw "Not Allowed";
+        }
+        query = `UPDATE CONTESTS SET TITLE = :title, START_TIME = :startTime, END_TIME = :endTime WHERE CONTEST_ID = :contestId`;
+        result = await executeQuery(query, {title, startTime, endTime, contestId});
+        res.json({status: 'success', message: result});
+    }catch(err){
+        res.json({status: 'failure', message: err})
+        console.error(err);
+    }
+})
+
+
 
 export default router;

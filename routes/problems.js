@@ -43,11 +43,17 @@ router.post('/get', async (req, res) => {
 	}
 })
 
-router.post('/contestProblem', async (req, res) => {
+router.post('/contestProblem', auth, async (req, res) => {
 	console.log(req.body)
 	const contestId = req.body.contestId;
+	const handle = res.locals.handle;
 	try{
-		const query = `SELECT * FROM PROBLEMS WHERE CONTEST_ID = :contestId`;
+		let query = `SELECT HANDLE, START_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId`;
+		const contestDetails = await executeQuery(query, {contestId});
+		if(contestDetails.rows[0][0] != handle && Date.now() < contestDetails.rows[0][1]){
+			throw "Not Allowed";
+		}
+		query = `SELECT * FROM PROBLEMS WHERE CONTEST_ID = :contestId`;
 		const result = await executeQuery(query, {contestId})
 		const problems = []
 		const numOfProblems = result.rows.length;
@@ -71,6 +77,12 @@ router.post('/contestProblem', async (req, res) => {
 
 router.post('/create', auth, async(req, res) => {
 	try{
+		const userHandle = res.locals.handle;
+		let query = `SELECT HANDLE, START_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId`;
+		const contestDetails = await executeQuery(query, {contestId});
+		if(contestDetails.rows[0][0] != userHandle || contestDetails.rows[0][1] < Date.now()){
+			throw "Not Allowed";
+		}
 		let problem = req.body;
 		let dir = "contests/" + problem.contestId + "/" + problem.problemNo;
 		if(!fs.existsSync(dir)){
@@ -111,7 +123,7 @@ router.post('/create', auth, async(req, res) => {
 		})
 		s = s.slice(0, -1);
 
-		let query = `INSERT INTO problems(problem_id, contest_id, name, time_limit, memory_limit, difficulty, handle, categories) VALUES(:problemId, :contestId, :name, :timeLimit, :memoryLimit, :difficulty, :handle, :categories)`;
+		query = `INSERT INTO problems(problem_id, contest_id, name, time_limit, memory_limit, difficulty, handle, categories) VALUES(:problemId, :contestId, :name, :timeLimit, :memoryLimit, :difficulty, :handle, :categories)`;
 		let bind = {
 			problemId: problem.problemNo,
 			contestId: problem.contestId,
@@ -119,7 +131,7 @@ router.post('/create', auth, async(req, res) => {
 			timeLimit: problem.timeLimit,
 			memoryLimit: problem.memoryLimit,
 			difficulty: problem.difficulty,
-			handle: res.locals.handle,
+			handle: userHandle,
 			categories: s
 		}
 		let result = await executeQuery(query, bind);
@@ -162,30 +174,71 @@ router.post('/problemDetail', async (req, res) => {
 })
 
 router.post('/submission', auth, async (req, res) => {
-	const contestId = req.body.contestId;
-	const problemId = req.body.problemId;
-	const submissionId = req.body.submissionId;
-	const handle = res.locals.handle;
-	const query = `SELECT * FROM SUBMISSIONS WHERE PROBLEM_ID =: problemId AND CONTEST_ID = :contestId AND submission_id = :submissionId`;
-	const result = await executeQuery(query, {problemId, contestId, submissionId})
-	console.log(result)
-	const code = await getSubmissionCode(contestId, problemId, submissionId)
-	// console.log(code)
-	const submission = {
-		submissionId,
-		submissionTime: result.rows[0][6],
-		verdict: result.rows[0][7],
-		verdictDetail: result.rows[0][8],
-		code
+	try{
+		const contestId = req.body.contestId;
+		const problemId = req.body.problemId;
+		const submissionId = req.body.submissionId;
+		const handle = res.locals.handle;
+		let query = `SELECT START_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId`;
+		let result = await executeQuery(query, {contestId});
+		const endTime = result.rows[0][0];
+		query = `SELECT * FROM SUBMISSIONS WHERE PROBLEM_ID =: problemId AND CONTEST_ID = :contestId AND submission_id = :submissionId`;
+		result = await executeQuery(query, {problemId, contestId, submissionId})
+		console.log(result)
+		if(endTime > Date.now() && handle != result.rows[0][0]){
+			throw "Not Allowed";
+		}
+		const code = await getSubmissionCode(contestId, problemId, submissionId)
+		// console.log(code)
+		const submission = {
+			submissionId,
+			submissionTime: result.rows[0][6],
+			verdict: result.rows[0][7],
+			verdictDetail: result.rows[0][8],
+			code
+		}
+		res.json({status: 'success', message: {submission}})
+	}catch(error){
+		console.log(err);
+		res.json({status: 'failed', message: err});
 	}
-	res.json({status: 'success', message: {submission}})
-})
+});
+
+
+router.get("/userSubmissions", auth, async (req, res)=>{
+	try{
+		const handle = res.locals.handle;
+		const query = `SELECT S.*, P.NAME FROM SUBMISSIONS S JOIN PROBLEMS P 
+						ON(S.CONTEST_ID = P.CONTEST_ID AND S.PROBLEM_ID = P.PROBLEM_ID) 
+						WHERE S.HANDLE = :handle`;
+		const result = await executeQuery(query, {handle});
+		let subs = [];
+		result.rows.forEach(s=>{
+			subs.push(
+				{
+					problemId: s[1],
+					contestId: s[2],
+					submissionId: s[3],
+					time: s[4],
+					memory: s[5],
+					subTime: s[6],
+					verdict: s[7],
+					name: s[9]
+				}
+			)
+		})
+		res.json({status: 'success', message: subs});
+	}catch(error){
+		console.log(err);
+		res.json({status: 'failed', message: err});
+	}
+});
 
 
 router.post('/submit', auth, async (req, res)=>{
-	let sub = req.body;
-	console.log(sub);
 	try{
+		let sub = req.body;
+		console.log(sub);
 		let handle = res.locals.handle;
 		let contestId = sub.contestId;
 		let problemId = sub.problemId;

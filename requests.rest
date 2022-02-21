@@ -7,8 +7,8 @@ POST http://localhost:5000/users/signup/
 Content-Type: application/json
 
 {
-    "handle": "unga",
-    "name": "bunga",
+    "handle": "bunga",
+    "name": "unga",
     "password": "Bleh",
     "email": null,
     "country": "Bangladesh",
@@ -31,17 +31,36 @@ Content-Type: application/json
 GET http://localhost:5000/contests
 
 ###
-
-POST http://localhost:5000/contests/create
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJibGFoIiwiaWF0IjoxNjQzOTE4NTk1LCJleHAiOjE2NDM5MjAzOTV9.eVYmZYJAilau-qmGkNzDTIx_ezkTs6vRyr9LB4iS8_A
+POST http://localhost:5000/contests/get
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDQzNTUzLCJleHAiOjE2NDU0NDUzNTN9.mtzVUY8ALDKOLVZ4LN2rAESZhwx5W0C99dwQrEmRxfE
 Content-Type: application/json
 
 {
-    "title": "A Contest",
-    "start_time": 1643462160277,
-    "end_time": 1643464534796,
+    "contestId": 81
+}
+###
+
+POST http://localhost:5000/contests/create
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDUxNzc2LCJleHAiOjE2NDU0NTM1NzZ9.EwE89V6v28z5R2CLkypx49gnncOtYaiP_c0nQaNcQjU
+Content-Type: application/json
+
+{
+    "title": "blah blah blah",
+    "startTime": 1643462160277,
+    "endTime": 1643464534796,
     "announcement": "sdsjdgfshjfbsdfbsdmnfsbjfeyfmsnfb snfsbnfsefnse sej sejfhbsnmf efhsb nsfshefbshjfbs sefj sjekfgs efse"
 }
+
+###
+
+POST http://localhost:5000/contests/delete
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDUxNzc2LCJleHAiOjE2NDU0NTM1NzZ9.EwE89V6v28z5R2CLkypx49gnncOtYaiP_c0nQaNcQjU
+Content-Type: application/json
+
+{
+    "contestId": 84
+}
+
 
 ###
 
@@ -116,6 +135,17 @@ Content-Type: application/json
 ###
 
 
+POST http://localhost:5000/problems/contestProblem
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJidW5nYSIsImlhdCI6MTY0NTQ0MTY2MSwiZXhwIjoxNjQ1NDQzNDYxfQ._sQGLS6p49SRBjpM-ULOk5-FIG5vlM3AULPuNBUxAq4
+Content-Type: application/json
+
+{
+     "contestId": 81
+}
+
+
+
+###
 
 POST http://localhost:5000/problems/submit
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1MjAzNDAxLCJleHAiOjE2NDUyMDUyMDF9.2oJoOWNinIsmYihtBwAqrgOIXJ446wcB-6P9xrYkanU
@@ -139,6 +169,14 @@ Content-Type: application/json
   "problemId": 3,
   "submissionId": 24
 }
+
+
+###
+
+
+GET http://localhost:5000/problems/userSubmissions
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDU4MzUzLCJleHAiOjE2NDU0NjAxNTN9.MybCZjUvOo0xVarKUHFk5N7-FxUnburn7xEXKmy8dl0
+
 
 
 ###
