@@ -89,9 +89,10 @@ router.post('/create', auth, async (req, res) => {
         }
 
         query = `BEGIN
-                    insert_blog(:handle, :data, :id);
+                    insert_blog(:handle, :data, :publishDate, :title, :id);
                 END;`;
-        result = await executeQuery(query, {handle, data, id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }});
+        let publishDate = Date.now();
+        result = await executeQuery(query, {handle, data, publishDate, title, id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }});
         let blog_id = result.outBinds.id;
         query = `INSERT INTO announcements(blog_id, contest_id) VALUES(:blog_id, :contest_id)`;
         result = await executeQuery(query, {blog_id, contest_id});
@@ -119,9 +120,7 @@ router.post("/delete", auth, async(req, res)=>{
         if(result.rows[0][0] < Date.now()){
             throw "Not Allowed";
         }
-        query = `BEGIN
-                    delete_contest(:contestId);
-                END;`
+        query = `DELETE FROM CONTESTS WHERE CONTEST_ID = :contestId`;
         result = await executeQuery(query, {contestId});
         res.json({status: 'success', message: result});
     }catch(err){
@@ -154,7 +153,34 @@ router.post("/edit", auth, async(req, res)=>{
         res.json({status: 'failure', message: err})
         console.error(err);
     }
-})
+});
+
+
+
+router.post("/generateResult", auth, async(req, res)=>{
+    try{
+        const contestId = req.body.contestId;
+        const handle = res.locals.handle;
+        let query = `SELECT HANDLE, END_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId`;
+        let result = await executeQuery(query, {contestId});
+        if(result.rows[0][0] != handle || result.rows[0][1] > Date.now()){
+            throw "Not Allowed";
+        }
+        query = `SELECT RATING_CHANGE FROM STANDINGS WHERE CONTEST_ID = :contestId FETCH FIRST 1 ROWS ONLY`
+        result = await executeQuery(query, {contestId});
+        if(result.rows.length != 0 && result.rows[0][0] != 0){
+            throw "Not Allowed";
+        }
+        query = `BEGIN
+                    update_rating(:contestId);
+                END;`;
+        result = await executeQuery(query, {contestId});
+        res.json({status: 'success', message: result});
+    }catch(error){
+        res.json({status: 'failure', message: error})
+        console.error(error);
+    }
+});
 
 
 

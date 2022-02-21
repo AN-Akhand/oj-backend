@@ -41,24 +41,35 @@ Content-Type: application/json
 ###
 
 POST http://localhost:5000/contests/create
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDUxNzc2LCJleHAiOjE2NDU0NTM1NzZ9.EwE89V6v28z5R2CLkypx49gnncOtYaiP_c0nQaNcQjU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDczNTg4LCJleHAiOjE2NDU0NzUzODh9.jIYFVAc1QWyygwaL3kBsFDnf1OvnKu5zaErJvMEqEqE
 Content-Type: application/json
 
 {
-    "title": "blah blah blah",
-    "startTime": 1643462160277,
-    "endTime": 1643464534796,
+    "title": "something something",
+    "startTime": " 1645477291809",
+    "endTime": " 1645477291809",
     "announcement": "sdsjdgfshjfbsdfbsdmnfsbjfeyfmsnfb snfsbnfsefnse sej sejfhbsnmf efhsb nsfshefbshjfbs sefj sjekfgs efse"
 }
 
 ###
 
 POST http://localhost:5000/contests/delete
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDUxNzc2LCJleHAiOjE2NDU0NTM1NzZ9.EwE89V6v28z5R2CLkypx49gnncOtYaiP_c0nQaNcQjU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDczNTg4LCJleHAiOjE2NDU0NzUzODh9.jIYFVAc1QWyygwaL3kBsFDnf1OvnKu5zaErJvMEqEqE
 Content-Type: application/json
 
 {
-    "contestId": 84
+    "contestId": 88
+}
+
+
+###
+
+POST http://localhost:5000/contests/generateResult
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDY0NTM4LCJleHAiOjE2NDU0NjYzMzh9.Uj2WY9Vw3l0lUhH7hcs_FEw3kvdc80eoH00Ud_4HMNk
+Content-Type: application/json
+
+{
+    "contestId": 22
 }
 
 
@@ -185,6 +196,41 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhI
 GET http://localhost:5000/blogs
 
 ###
+
+POST http://localhost:5000/blogs/create-blog
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDcwMTM4LCJleHAiOjE2NDU0NzE5Mzh9.oP9Ddi7QbKa_AVjNlLfpcTKms8RCsPZXdihfO5bxBv8
+Content-Type: application/json
+
+{
+    "blogTitle": "Something",
+    "blogBody": "Somsdfsdfsdfsdfdsgdfgdfgdfbvcbgfthfghfgh",
+    "created": "1643462160277"
+}
+
+
+###
+
+
+
+POST http://localhost:5000/blogs/create-tutorial
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDcyMDQ5LCJleHAiOjE2NDU0NzM4NDl9.amsMGkckhGrYE_Npwmy_wG4BICNLbmn9YjtBrewuimE
+Content-Type: application/json
+
+{
+    "blogTitle": "SomeTutorial",
+    "blogBody": "Somsdfsdfsdfsdfdsgdfgdfgdfbvcbgfthfghfgh",
+    "created": "1643462160277",
+    "contestId": 22,
+    "problemId": "A"
+}
+
+### 
+
+GET http://localhost:5000/blogs/get/87
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDc0NjQ0LCJleHAiOjE2NDU0NzY0NDR9.JarIe7j2r-16IiDctz1L-tLykbmFl0XIU4pLgLhdMe8
+###
+
+
 POST http://localhost:5000/problems/problemDetail
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1MTM5ODU5LCJleHAiOjE2NDUxNDE2NTl9.p4gjdM_ywGjEpR1StyEl7mxkg_eWJ6zVwE63_z3rdzw
 Content-Type: application/json

@@ -304,7 +304,7 @@ async function checkAndUpdateContestStanding(contestId, subTime, handle, verdict
 			query = `INSERT INTO standings(contest_id, handle) VALUES(:contestId, :handle)`;
 			result = executeQuery(query, {contestId, handle});
 		}
-		let penalty = (endTime - parseInt(subTime)) / (endTime - startTime) * 50;
+		let penalty = (parseInt(subTime) - startTime) / (endTime - startTime) * 50;
 		if (verdict === 'AC') {
 			query = `UPDATE standings SET penalty = penalty + :penalty, ac_problems = ac_problems + 1 
 						WHERE contest_id = :contestId AND handle = :handle`;
