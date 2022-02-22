@@ -103,13 +103,13 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:5000/problems
+POST http://localhost:5000/problems/get
 Content-Type: application/json
 
 {
     "sortBy": "difficulty",
     "category": [
-        "ad hoc"
+        "dynamic programming"
     ]
 }
 ###

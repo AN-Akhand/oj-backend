@@ -12,7 +12,8 @@ router.post('/get', async (req, res) => {
 	// console.log('eitay ashe!')
 	console.log(req.body);
 	try{
-		let query = `SELECT problem_id, contest_id, name, categories, difficulty, tries, solves FROM problems `;
+		let query = `SELECT p.problem_id, p.contest_id, p.name, p.categories, p.difficulty, p.tries, p.solves 
+					FROM problems p JOIN contests c ON (p.contest_id = c.contest_id AND c.start_time < ${Date.now()}) `;
 		if(req.body.category.length > 0){
 			query = query + "WHERE ";
 			req.body.category.forEach(c=>{
