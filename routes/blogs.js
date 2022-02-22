@@ -87,4 +87,58 @@ router.get("/get/:id", auth, async(req, res)=>{
 })
 
 
+router.post("/comment", auth, async(req, res)=>{
+    try{
+        const data = req.body.comment;
+        const time = req.body.time;
+        const handle = res.locals.handle;
+        const blogId = req.body.blogId;
+        let query = `BEGIN
+                        insert_comment(:handle, :data, :blogId, :time, :id);
+                    END;`
+        let result = await executeQuery(query, {handle, data, blogId, time, id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }});
+        const commentId = result.outBinds.id;
+        res.json({status: 'success', message: commentId});
+    }catch(error){
+        console.log(error);
+		res.json({status: 'failed', message: error});
+    }
+});
+
+
+
+router.get("/getComments/:id", auth, async(req, res)=>{
+    try{
+        const blogId = req.params.id;
+        const handle = res.locals.handle;
+        let query = `SELECT * FROM COMMENTS WHERE BLOG_ID = :blogId`;
+        let result = await executeQuery(query, {blogId});
+        if(result.rows.length == 0){
+            throw "No such blog";
+        }
+
+        let comments = [];
+
+
+        result.rows.forEach(c=>{
+            comments.push(
+                {
+                    commentId: c[0],
+                    blogId: c[1],
+                    handle: c[2],
+                    data: c[3],
+                    time: c[4]
+                }
+            )
+        })
+
+        res.send({status: 'success', comments: comments});
+
+    }catch(error){
+        console.log(error);
+		res.json({status: 'failed', message: error});
+    }
+})
+
+
 export default router;

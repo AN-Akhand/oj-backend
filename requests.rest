@@ -41,24 +41,24 @@ Content-Type: application/json
 ###
 
 POST http://localhost:5000/contests/create
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDczNTg4LCJleHAiOjE2NDU0NzUzODh9.jIYFVAc1QWyygwaL3kBsFDnf1OvnKu5zaErJvMEqEqE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTE5MjA5LCJleHAiOjE2NDU1MjEwMDl9.QrG03_Waj7KJIXfBHpisIQ_s2ppwD4Oyvqd75ChCh6U
 Content-Type: application/json
 
 {
-    "title": "something something",
-    "startTime": " 1645477291809",
-    "endTime": " 1645477291809",
+    "title": "something something something",
+    "startTime": "1645522727150",
+    "endTime": "1645526327150",
     "announcement": "sdsjdgfshjfbsdfbsdmnfsbjfeyfmsnfb snfsbnfsefnse sej sejfhbsnmf efhsb nsfshefbshjfbs sefj sjekfgs efse"
 }
 
 ###
 
 POST http://localhost:5000/contests/delete
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDczNTg4LCJleHAiOjE2NDU0NzUzODh9.jIYFVAc1QWyygwaL3kBsFDnf1OvnKu5zaErJvMEqEqE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTE5MjA5LCJleHAiOjE2NDU1MjEwMDl9.QrG03_Waj7KJIXfBHpisIQ_s2ppwD4Oyvqd75ChCh6U
 Content-Type: application/json
 
 {
-    "contestId": 88
+    "contestId": 89
 }
 
 
@@ -88,14 +88,14 @@ Content-Type: application/json
 
 
 POST http://localhost:5000/problems/create
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1MDI0OTExLCJleHAiOjE2NDUwMjY3MTF9.uhTdqkeUJ0JGeRtFpIFg9PkTdp_Yfzbg9jPVUUg0EPw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTE5MjA5LCJleHAiOjE2NDU1MjEwMDl9.QrG03_Waj7KJIXfBHpisIQ_s2ppwD4Oyvqd75ChCh6U
 Content-Type: application/json
 
 {
-    "contestId": 22,
-    "name": "Something",
+    "contestId": 89,
+    "name": "blah blah blah unga bunga",
     "problemID": "-1",
-    "problemNo": "B",
+    "problemNo": "A",
     "timeLimit": 1,
     "difficulty": 1500,
     "memoryLimit": 512,
@@ -213,14 +213,14 @@ Content-Type: application/json
 
 
 POST http://localhost:5000/blogs/create-tutorial
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDcyMDQ5LCJleHAiOjE2NDU0NzM4NDl9.amsMGkckhGrYE_Npwmy_wG4BICNLbmn9YjtBrewuimE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTE5MjA5LCJleHAiOjE2NDU1MjEwMDl9.QrG03_Waj7KJIXfBHpisIQ_s2ppwD4Oyvqd75ChCh6U
 Content-Type: application/json
 
 {
     "blogTitle": "SomeTutorial",
     "blogBody": "Somsdfsdfsdfsdfdsgdfgdfgdfbvcbgfthfghfgh",
     "created": "1643462160277",
-    "contestId": 22,
+    "contestId": 89,
     "problemId": "A"
 }
 
@@ -228,6 +228,25 @@ Content-Type: application/json
 
 GET http://localhost:5000/blogs/get/87
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDc0NjQ0LCJleHAiOjE2NDU0NzY0NDR9.JarIe7j2r-16IiDctz1L-tLykbmFl0XIU4pLgLhdMe8
+###
+
+POST http://localhost:5000/blogs/comment
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTI3MzYyLCJleHAiOjE2NDU1MjkxNjJ9.6XX84OWemKzD99pgA2RKVqVyrjxBAfZErHOIOhP60kM
+Content-Type: application/json
+
+{
+    "blogId": 92,
+    "comment": "sdfsdfsdvvrrgdf efsfsdfds",
+    "time": "1643462160277"
+}
+
+###
+
+
+GET http://localhost:5000/blogs/getComments/92
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTI3MzYyLCJleHAiOjE2NDU1MjkxNjJ9.6XX84OWemKzD99pgA2RKVqVyrjxBAfZErHOIOhP60kM
+
+
 ###
 
 

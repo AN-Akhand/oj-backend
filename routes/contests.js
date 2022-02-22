@@ -122,6 +122,7 @@ router.post("/delete", auth, async(req, res)=>{
         }
         query = `DELETE FROM CONTESTS WHERE CONTEST_ID = :contestId`;
         result = await executeQuery(query, {contestId});
+        fs.rmSync("contests/" + contestId, {recursive: true});
         res.json({status: 'success', message: result});
     }catch(err){
         res.json({status: 'failure', message: err})

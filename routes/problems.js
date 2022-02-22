@@ -78,6 +78,7 @@ router.post('/contestProblem', auth, async (req, res) => {
 router.post('/create', auth, async(req, res) => {
 	try{
 		const userHandle = res.locals.handle;
+		let contestId = req.body.contestId;
 		let query = `SELECT HANDLE, START_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId`;
 		const contestDetails = await executeQuery(query, {contestId});
 		if(contestDetails.rows[0][0] != userHandle || contestDetails.rows[0][1] < Date.now()){
