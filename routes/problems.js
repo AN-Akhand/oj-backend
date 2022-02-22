@@ -330,8 +330,8 @@ router.post('/submit', auth, async (req, res)=>{
 async function checkAndUpdateContestStanding(problemId, contestId, subTime, handle, verdict) {
 	let query = `SELECT HANDLE FROM SUBMISSIONS WHERE CONTEST_ID = :contestId AND PROBLEM_ID = :problemId AND HANDLE = :handle AND LOWER(VERDICT) = 'ac'`;
 	let result = await executeQuery(query, {contestId, problemId, handle});
-	if(result.rows.length > 0){
-		throw "Not Allowed";
+	if(result.rows.length > 1){
+		return;
 	}
 	query = `SELECT end_time, start_time FROM CONTESTS WHERE contest_id = :contestId`;
 	let contest = await executeQuery(query, {contestId});
