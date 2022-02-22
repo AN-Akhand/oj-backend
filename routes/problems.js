@@ -77,6 +77,7 @@ router.post('/contestProblem', auth, async (req, res) => {
 
 router.post('/create', auth, async(req, res) => {
 	try{
+		console.log(req.body);
 		const userHandle = res.locals.handle;
 		let contestId = req.body.contestId;
 		let query = `SELECT HANDLE, START_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId`;
@@ -143,6 +144,33 @@ router.post('/create', auth, async(req, res) => {
 		console.log(err);
 	}
 })
+
+
+
+router.post("/delete", auth, async(req, res)=>{
+    try{
+        const contestId = req.body.contestId;
+		const problemId = req.body.problemId;
+        const handle = res.locals.handle;
+        let query = `SELECT START_TIME FROM PROBLEMS WHERE CONTEST_ID = :contestId AND HANDLE = :handle`;
+        let result = await executeQuery(query, {contestId, handle});
+        if(result.rows.length == 0){
+            throw "Not Allowed";
+        }
+        if(result.rows[0][0] < Date.now()){
+            throw "Not Allowed";
+        }
+        query = `DELETE FROM PROBLEMS WHERE CONTEST_ID = :contestId AND PROBLEM_ID =:problemId`;
+        result = await executeQuery(query, {contestId, problemId});
+        fs.rmSync("contests/" + contestId + "/" + problemId, {recursive: true});
+        res.json({status: 'success', message: result});
+    }catch(err){
+        res.json({status: 'failure', message: err})
+        console.error(err);
+    }
+})
+
+
 
 router.post('/problemDetail', async (req, res) => {
 	const contestId = req.body.contestId;
@@ -306,7 +334,7 @@ async function checkAndUpdateContestStanding(contestId, subTime, handle, verdict
 			result = executeQuery(query, {contestId, handle});
 		}
 		let penalty = (parseInt(subTime) - startTime) / (endTime - startTime) * 50;
-		if (verdict === 'AC') {
+		if (verdict == 'AC') {
 			query = `UPDATE standings SET penalty = penalty + :penalty, ac_problems = ac_problems + 1 
 						WHERE contest_id = :contestId AND handle = :handle`;
 		} else {
@@ -317,6 +345,27 @@ async function checkAndUpdateContestStanding(contestId, subTime, handle, verdict
 	}
 }
 
+
+
+router.get('/search', async (req, res)=>{
+    try{
+        const searchStr = req.body.searchStr;
+        const query = `SELECT PROBLEM_ID, CONTEST_ID, NAME FROM PROBLEMS WHERE LOWER(NAME) LIKE '%${searchStr}%'`;
+        const result = await executeQuery(query, {});
+        let problems = [];
+        result.rows.forEach(p=>{
+            problems.push({
+                problemId: p[0],
+                contestId: p[1],
+				name: p[2]
+            })
+        })
+        res.json({status: 'success', problems: problems});
+    }catch(error){
+        console.log(error);
+        res.json({status: 'failure', message: error});
+    }
+})
 
 
 export default router;

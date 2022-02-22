@@ -115,10 +115,10 @@ router.post("/delete", auth, async(req, res)=>{
         let query = `SELECT START_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId AND HANDLE = :handle`;
         let result = await executeQuery(query, {contestId, handle});
         if(result.rows.length == 0){
-            throw "Not Allowed";
+            throw "No such contest";
         }
         if(result.rows[0][0] < Date.now()){
-            throw "Not Allowed";
+            throw "Contest Running";
         }
         query = `DELETE FROM CONTESTS WHERE CONTEST_ID = :contestId`;
         result = await executeQuery(query, {contestId});
@@ -219,6 +219,23 @@ router.get("/getResult", auth, async(req, res)=>{
     }
 })
 
-
+router.get('/search', async (req, res)=>{
+    try{
+        const searchStr = req.body.searchStr;
+        const query = `SELECT CONTEST_ID, TITLE FROM CONTESTS WHERE LOWER(TITLE) LIKE '%${searchStr}%'`;
+        const result = await executeQuery(query, {});
+        let contests = [];
+        result.rows.forEach(c=>{
+            contests.push({
+                contestId: c[0],
+				title: c[1]
+            })
+        })
+        res.json({status: 'success', contests: contests});
+    }catch(error){
+        console.log(error);
+        res.json({status: 'failure', message: error});
+    }
+})
 
 export default router;

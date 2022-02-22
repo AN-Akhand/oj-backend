@@ -1,5 +1,22 @@
-GET http://localhost:5000/users/bleh
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ0NTIzMjI4LCJleHAiOjE2NDQ1MjUwMjh9.X5ARKuKo305WkBE9p8tGtki_frilNQ5VDKAP129M5uo
+GET http://localhost:5000/users/getUser
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTQ5ODU5LCJleHAiOjE2NDU1NTE2NTl9.De0whv9_OWshvKD41cyM_6y3hQehMTh7iB-GzqnGEbM
+Content-Type: application/json
+
+{
+    "handle": "unga"
+}
+###
+
+GET http://localhost:5000/users/
+
+###
+
+GET http://localhost:5000/users/search
+Content-Type: application/json
+
+{
+    "searchStr": "un"
+}
 
 ###
 
@@ -28,7 +45,7 @@ Content-Type: application/json
 ###
 
 
-GET http://localhost:5000/contests
+GET http://localhost:5000/contests/contests
 
 ###
 POST http://localhost:5000/contests/get
@@ -54,22 +71,33 @@ Content-Type: application/json
 ###
 
 POST http://localhost:5000/contests/delete
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTE5MjA5LCJleHAiOjE2NDU1MjEwMDl9.QrG03_Waj7KJIXfBHpisIQ_s2ppwD4Oyvqd75ChCh6U
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTQyMzE5LCJleHAiOjE2NDU1NDQxMTl9.DdWjgWkNOqo8KxfA8oqCbf7HDuq_qOWiWKC6R_Z0wEo
 Content-Type: application/json
 
 {
-    "contestId": 89
+    "contestId": 90
 }
 
 
 ###
 
 POST http://localhost:5000/contests/generateResult
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NDY0NTM4LCJleHAiOjE2NDU0NjYzMzh9.Uj2WY9Vw3l0lUhH7hcs_FEw3kvdc80eoH00Ud_4HMNk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTQzMjE3LCJleHAiOjE2NDU1NDUwMTd9.VeS0w9xKOQ4t77ATA4M-4k0ldRtcPQWxNM-H-WKTnIM
 Content-Type: application/json
 
 {
-    "contestId": 22
+    "contestId": 91
+}
+
+
+###
+
+
+GET http://localhost:5000/contests/search
+Content-Type: application/json
+
+{
+  "searchStr": "a"
 }
 
 
@@ -157,12 +185,12 @@ Content-Type: application/json
 ###
 
 
-POST http://localhost:5000/contests/getResult
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTMzMzI2LCJleHAiOjE2NDU1MzUxMjZ9.u4yOkycMn4cezD3fUi9E7tvZNM6Ifqk7FxfBXELfNxo
+GET http://localhost:5000/contests/getResult
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTQzMjE3LCJleHAiOjE2NDU1NDUwMTd9.VeS0w9xKOQ4t77ATA4M-4k0ldRtcPQWxNM-H-WKTnIM
 Content-Type: application/json
 
 {
-     "contestId": 81
+     "contestId": 91
 }
 
 ###
@@ -188,6 +216,18 @@ Content-Type: application/json
   "contestId": 69,
   "problemId": 3,
   "submissionId": 24
+}
+
+
+###
+
+
+
+GET http://localhost:5000/problems/search
+Content-Type: application/json
+
+{
+  "searchStr": "ch"
 }
 
 
@@ -254,6 +294,29 @@ Content-Type: application/json
 
 GET http://localhost:5000/blogs/getComments/92
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTI3MzYyLCJleHAiOjE2NDU1MjkxNjJ9.6XX84OWemKzD99pgA2RKVqVyrjxBAfZErHOIOhP60kM
+
+
+###
+
+GET http://localhost:5000/blogs/getUserBlogs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTQ5MDM4LCJleHAiOjE2NDU1NTA4Mzh9.9J_Ac-a0kC4wi-ZttjWF39s7VTMbYx4WADm_wudri18
+Content-Type: application/json
+
+{
+    "handle": "unga"
+}
+
+
+
+###
+
+
+GET http://localhost:5000/blogs/search
+Content-Type: application/json
+
+{
+  "searchStr": "some"
+}
 
 
 ###

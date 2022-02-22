@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -9,13 +8,15 @@ import {executeQuery} from '../DB/executequery.js';
 const router = express.Router();
 router.use(express.json());
 
-router.get('/:handle', auth, async (req, res) => {
-    if (res.locals.handle === req.params.handle) {
+router.get('/getUser', auth, async (req, res) => {
+    let handle = req.body.handle;
+    console.log(handle, res.locals.handle);
+    if (res.locals.handle == handle) {
         //info abount yourself
         console.log('info about yourself');
         const sql = `SELECT * FROM users where handle = :handle`;
         try{
-            const checkResult = await executeQuery(sql, {handle: req.params.handle});
+            const checkResult = await executeQuery(sql, {handle: handle});
 
             console.log(checkResult)
 
@@ -108,4 +109,48 @@ router.post('/login', async (req, res) => {
         res.status(500).send({error: "server internal error"});
     }
 })
+
+
+
+router.get('/', async (req, res)=>{
+    try{
+        const query = `SELECT HANDLE, NAME, GLOBAL_RATING FROM USERS ORDER BY GLOBAL_RATING DESC`;
+        const result = await executeQuery(query, {});
+        let users = [];
+        result.rows.forEach(u=>{
+            users.push({
+                handle: u[0],
+                name: u[1],
+                rating: u[2]
+            })
+        })
+        res.json({status: 'success', users: users});
+    }catch(error){
+        console.log(error);
+        res.json({status: 'failure', message: error});
+    }
+})
+
+
+router.get('/search', async (req, res)=>{
+    try{
+        const searchStr = req.body.searchStr;
+        const query = `SELECT HANDLE, NAME FROM USERS WHERE LOWER(HANDLE) LIKE '%${searchStr}%'`;
+        const result = await executeQuery(query, {});
+        let users = [];
+        result.rows.forEach(u=>{
+            users.push({
+                handle: u[0],
+                name: u[1],
+            })
+        })
+        res.json({status: 'success', users: users});
+    }catch(error){
+        console.log(error);
+        res.json({status: 'failure', message: error});
+    }
+})
+
+
+
 export default router;

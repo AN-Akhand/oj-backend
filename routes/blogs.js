@@ -98,12 +98,33 @@ router.post("/comment", auth, async(req, res)=>{
                     END;`
         let result = await executeQuery(query, {handle, data, blogId, time, id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }});
         const commentId = result.outBinds.id;
-        res.json({status: 'success', message: commentId});
+        res.json({status: 'success', commentId: commentId});
     }catch(error){
         console.log(error);
 		res.json({status: 'failed', message: error});
     }
 });
+
+
+router.get("/getUserBlogs", auth, async(req, res)=>{
+    try{
+        const handle = req.body.handle;
+        const query = `SELECT HANDLE, BLOG_ID, TITLE FROM BLOGS WHERE HANDLE = :handle`;
+        const result = await executeQuery(query, {handle});
+        let blogs = [];
+        result.rows.forEach(b=>{
+            blogs.push({
+                handle: b[0],
+                blogId: b[1],
+                title: b[2]
+            })
+        })
+        res.json({status: 'success', blogs: blogs});
+    }catch(error){
+        console.log(error);
+		res.json({status: 'failed', message: error});
+    }
+})
 
 
 
@@ -137,6 +158,27 @@ router.get("/getComments/:id", auth, async(req, res)=>{
     }catch(error){
         console.log(error);
 		res.json({status: 'failed', message: error});
+    }
+})
+
+
+
+router.get('/search', async (req, res)=>{
+    try{
+        const searchStr = req.body.searchStr;
+        const query = `SELECT BLOG_ID, TITLE FROM BLOGS WHERE LOWER(TITLE) LIKE '%${searchStr}%'`;
+        const result = await executeQuery(query, {});
+        let blogs = [];
+        result.rows.forEach(b=>{
+            blogs.push({
+                blogId: b[0],
+				title: b[1]
+            })
+        })
+        res.json({status: 'success', blogs: blogs});
+    }catch(error){
+        console.log(error);
+        res.json({status: 'failure', message: error});
     }
 })
 
