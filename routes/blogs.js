@@ -93,7 +93,7 @@ router.get("/get/:id", auth, async(req, res)=>{
             title: b[5]
         };
 
-        res.send({status: 'success', blog: b, owner: isOwner});
+        res.json({status: 'success', blog: blog, owner: isOwner});
 
     }catch(error){
         console.log(error);
