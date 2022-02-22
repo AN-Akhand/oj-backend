@@ -154,7 +154,16 @@ Content-Type: application/json
      "contestId": 81
 }
 
+###
 
+
+POST http://localhost:5000/contests/getResult
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTMzMzI2LCJleHAiOjE2NDU1MzUxMjZ9.u4yOkycMn4cezD3fUi9E7tvZNM6Ifqk7FxfBXELfNxo
+Content-Type: application/json
+
+{
+     "contestId": 81
+}
 
 ###
 

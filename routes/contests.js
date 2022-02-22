@@ -167,9 +167,9 @@ router.post("/generateResult", auth, async(req, res)=>{
         if(result.rows[0][0] != handle || result.rows[0][1] > Date.now()){
             throw "Not Allowed";
         }
-        query = `SELECT RATING_CHANGE FROM STANDINGS WHERE CONTEST_ID = :contestId FETCH FIRST 1 ROWS ONLY`
+        query = `SELECT RATING_CHANGE FROM STANDINGS WHERE CONTEST_ID = :contestId FETCH FIRST 1 ROWS ONLY`;
         result = await executeQuery(query, {contestId});
-        if(result.rows.length != 0 && result.rows[0][0] != 0){
+        if(result.rows.length != 0 && result.rows[0][0] != null){
             throw "Not Allowed";
         }
         query = `BEGIN
@@ -182,6 +182,42 @@ router.post("/generateResult", auth, async(req, res)=>{
         console.error(error);
     }
 });
+
+
+
+router.get("/getResult", auth, async(req, res)=>{
+    try{
+        const contestId = req.body.contestId;
+        const handle = res.locals.handle;
+        let query = `SELECT HANDLE, END_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId`;
+        let result = await executeQuery(query, {contestId});
+        if(result.rows.length == 0 || result.rows[0][1] > Date.now()){
+            throw "Not Allowed";
+        }
+        query = `SELECT RATING_CHANGE FROM STANDINGS WHERE CONTEST_ID = :contestId FETCH FIRST 1 ROWS ONLY`;
+        result = await executeQuery(query, {contestId});
+        if(result.rows.length != 0 && result.rows[0][0] == null){
+            throw "Not Allowed";
+        }
+        query = `SELECT * FROM STANDINGS WHERE CONTEST_ID = :contestId ORDER BY RATING_CHANGE DESC`;
+        result = await executeQuery(query, {contestId});
+        let standings = [];
+        result.rows.forEach(s=>{
+            standings.push({
+                contestId: s[0],
+                handle: s[1],
+                acProblems: s[2],
+                wrongSubs: s[4],
+                ratingChange: s[5]
+            })
+        })
+
+        res.json({status: 'success', standings: standings});
+    }catch(error){
+        res.json({status: 'failure', message: error})
+        console.error(error);
+    }
+})
 
 
 
