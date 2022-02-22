@@ -8,7 +8,7 @@ import {executeQuery} from '../DB/executequery.js';
 const router = express.Router();
 router.use(express.json());
 
-router.get('/getUser', auth, async (req, res) => {
+router.post('/getUser', auth, async (req, res) => {
     let isOwner = false;
     let handle = req.body.handle;
     console.log(handle, res.locals.handle);
