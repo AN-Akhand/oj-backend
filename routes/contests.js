@@ -199,7 +199,7 @@ router.get("/getResult", auth, async(req, res)=>{
         if(result.rows.length != 0 && result.rows[0][0] == null){
             throw "Not Allowed";
         }
-        query = `SELECT * FROM STANDINGS WHERE CONTEST_ID = :contestId ORDER BY RATING_CHANGE DESC`;
+        query = `SELECT * FROM STANDINGS WHERE CONTEST_ID = :contestId ORDER BY AC_PROBLEMS DESC, PENALTY ASC`;
         result = await executeQuery(query, {contestId});
         let standings = [];
         result.rows.forEach(s=>{

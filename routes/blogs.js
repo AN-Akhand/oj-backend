@@ -7,8 +7,23 @@ const router = express.Router();
 router.use(express.json());
 
 router.get('/', async (req, res) => {
-    console.log("list of blogs");
-    res.send("blogs");
+    try{
+        const handle = req.body.handle;
+        const query = `SELECT HANDLE, BLOG_ID, TITLE FROM BLOGS`;
+        const result = await executeQuery(query, {});
+        let blogs = [];
+        result.rows.forEach(b=>{
+            blogs.push({
+                handle: b[0],
+                blogId: b[1],
+                title: b[2]
+            })
+        })
+        res.json({status: 'success', blogs: blogs});
+    }catch(error){
+        console.log(error);
+		res.json({status: 'failed', message: error});
+    }
 })
 
 router.post("/create-blog", auth, async(req, res)=>{

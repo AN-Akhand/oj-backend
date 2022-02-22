@@ -1,4 +1,4 @@
-GET http://localhost:5000/users/getUser
+POST http://localhost:5000/users/getUser
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYW5kbGUiOiJ1bmdhIiwiaWF0IjoxNjQ1NTU1NDgwLCJleHAiOjE2NDU1NTcyODB9.kHb-YqETUIFNt4366ASZv5VkxLVEK9s0-t-_dtKMPSY
 Content-Type: application/json
 

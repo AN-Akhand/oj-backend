@@ -273,10 +273,16 @@ router.post('/submit', auth, async (req, res)=>{
 		let contestId = sub.contestId;
 		let problemId = sub.problemId;
 		let subTime = sub.time;
-		let query = `BEGIN 
+
+		let query = `SELECT HANDLE, END_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId`;
+		let result = await executeQuery(query, {contestId});
+		if(handle == result.rows[0][0] && Date.now() < result.rows[0][1]){
+			throw "Not Allowed";
+		}
+		query = `BEGIN 
 						insert_sub(:handle, :contestId, :problemId, :subTime, :id);
 					END;`;
-		let result = await executeQuery(query, {handle, contestId, problemId, subTime, id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }});
+		result = await executeQuery(query, {handle, contestId, problemId, subTime, id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }});
 		let subId = result.outBinds.id;
 		let dir = "contests/" + sub.contestId + "/" + sub.problemId + "/submission";
 		if(!fs.existsSync(dir)){
@@ -303,7 +309,7 @@ router.post('/submit', auth, async (req, res)=>{
 			console.log(detail);
 			query = `UPDATE SUBMISSIONS SET VERDICT = :verdict, VERDICT_DETAIL = :detail WHERE SUBMISSION_ID = :subId`;
 			result = await executeQuery(query, {verdict, detail, subId});
-			await checkAndUpdateContestStanding(contestId, subTime, handle, finalVerdict.verdict)
+			await checkAndUpdateContestStanding(problemId, contestId, subTime, handle, finalVerdict.verdict)
 			if(verdict == 'AC'){
 				query = `UPDATE PROBLEMS SET TRIES = TRIES + 1, SOLVES = SOLVES + 1 
 				WHERE CONTEST_ID = :contestId AND PROBLEM_ID = :problemId`;
@@ -321,15 +327,20 @@ router.post('/submit', auth, async (req, res)=>{
 	}
 })
 
-async function checkAndUpdateContestStanding(contestId, subTime, handle, verdict) {
-	let query = `SELECT end_time, start_time FROM CONTESTS WHERE contest_id = :contestId`;
+async function checkAndUpdateContestStanding(problemId, contestId, subTime, handle, verdict) {
+	let query = `SELECT HANDLE FROM SUBMISSIONS WHERE CONTEST_ID = :contestId AND PROBLEM_ID = :problemId AND HANDLE = :handle AND LOWER(VERDICT) = 'ac'`;
+	let result = await executeQuery(query, {contestId, problemId, handle});
+	if(result.rows.length > 0){
+		throw "Not Allowed";
+	}
+	query = `SELECT end_time, start_time FROM CONTESTS WHERE contest_id = :contestId`;
 	let contest = await executeQuery(query, {contestId});
 	let endTime = contest.rows[0][0];
 	let startTime = contest.rows[0][1];
 	if(!endTime) return;
 	if (parseInt(endTime) > parseInt(subTime)) {
 		query = `SELECT handle FROM standings WHERE CONTEST_ID = :contestId AND handle = :handle`;
-		let result = await executeQuery(query, {contestId, handle});
+		result = await executeQuery(query, {contestId, handle});
 		if (result.rows.length === 0) {
 			query = `INSERT INTO standings(contest_id, handle) VALUES(:contestId, :handle)`;
 			result = executeQuery(query, {contestId, handle});
@@ -338,11 +349,12 @@ async function checkAndUpdateContestStanding(contestId, subTime, handle, verdict
 		if (verdict == 'AC') {
 			query = `UPDATE standings SET penalty = penalty + :penalty, ac_problems = ac_problems + 1 
 						WHERE contest_id = :contestId AND handle = :handle`;
+			result = await executeQuery(query, {penalty, contestId, handle});
 		} else {
-			query = `UPDATE standings SET penalty = penalty + :penalty, wrong_subs = wrong_subs + 1 
+			query = `UPDATE standings SET wrong_subs = wrong_subs + 1, penalty = penalty + 50 
 						WHERE contest_id = :contestId AND handle = :handle`;
+			result = await executeQuery(query, {contestId, handle});
 		}
-		result = await executeQuery(query, {penalty, contestId, handle});
 	}
 }
 
