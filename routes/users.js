@@ -9,38 +9,30 @@ const router = express.Router();
 router.use(express.json());
 
 router.get('/getUser', auth, async (req, res) => {
+    let isOwner = false;
     let handle = req.body.handle;
     console.log(handle, res.locals.handle);
-    if (res.locals.handle == handle) {
-        //info abount yourself
-        console.log('info about yourself');
-        const sql = `SELECT * FROM users where handle = :handle`;
-        try{
-            const checkResult = await executeQuery(sql, {handle: handle});
-
-            console.log(checkResult)
-
-            const profileDetail = {
-                handle: checkResult.rows[0][0],
-                name: checkResult.rows[0][1],
-                joinDate: checkResult.rows[0][3],
-                lastLogin: checkResult.rows[0][4],
-                rating: checkResult.rows[0][5],
-                email: checkResult.rows[0][6],
-                country: checkResult.rows[0][7],
-                institute: checkResult.rows[0][8]
-            }
-            res.json(profileDetail);
-        }catch (err){
-            res.status(501).send({error:"server internal error"})
+    const sql = `SELECT * FROM users where handle = :handle`;
+    try{
+        const checkResult = await executeQuery(sql, {handle: handle});
+        console.log(checkResult)
+        const profileDetail = {
+            handle: checkResult.rows[0][0],
+            name: checkResult.rows[0][1],
+            joinDate: checkResult.rows[0][3],
+            lastLogin: checkResult.rows[0][4],
+            rating: checkResult.rows[0][5],
+            email: checkResult.rows[0][6],
+            country: checkResult.rows[0][7],
+            institute: checkResult.rows[0][8]
         }
-
-    } else {
-        //info about someone else
-        console.log('info about someone else');
-        res.json("why?")
+        if (res.locals.handle == handle) {
+            isOwner = true;
+        }
+        res.json({status: "success", profileDetail: profileDetail, owner: isOwner});
+    }catch (err){
+        res.status(501).send({error:"server internal error"})
     }
-    // res.sendStatus(200);
 });
 
 router.post('/signup', async (req, res) => {

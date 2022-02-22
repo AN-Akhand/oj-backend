@@ -183,4 +183,18 @@ router.get('/search', async (req, res)=>{
 })
 
 
+router.post("/delete", auth, async(req, res)=>{
+    try{
+        const blogId = req.body.blogId;
+        const handle = res.locals.handle;
+        query = `DELETE FROM BLOGS WHERE BLOG_ID = :blogId AND HANDLE =:handle`;
+        result = await executeQuery(query, {blogId, handle});
+        res.json({status: 'success', message: result});
+    }catch(err){
+        res.json({status: 'failure', message: err})
+        console.error(err);
+    }
+})
+
+
 export default router;
