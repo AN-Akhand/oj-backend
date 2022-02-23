@@ -6,10 +6,10 @@ import oracledb from 'oracledb';
 const router = express.Router();
 router.use(express.json());
 
-router.get('/', async (req, res) => {
+router.get('/blogs', async (req, res) => {
     try{
         const handle = req.body.handle;
-        const query = `SELECT HANDLE, BLOG_ID, TITLE FROM BLOGS`;
+        const query = `SELECT HANDLE, BLOG_ID, TITLE FROM BLOGS ORDER BY PUBLISH_DATE DESC`;
         const result = await executeQuery(query, {});
         let blogs = [];
         result.rows.forEach(b=>{
@@ -69,9 +69,9 @@ router.post("/create-tutorial", auth, async(req, res)=>{
 });
 
 
-router.get("/get/:id", auth, async(req, res)=>{
+router.post("/get", auth, async(req, res)=>{
     try{
-        const blogId = req.params.id;
+        const blogId = req.body.blogId;
         let isOwner = false;
         const handle = res.locals.handle;
         let query = `SELECT * FROM BLOGS WHERE BLOG_ID = :blogId`;
@@ -121,7 +121,7 @@ router.post("/comment", auth, async(req, res)=>{
 });
 
 
-router.get("/getUserBlogs", auth, async(req, res)=>{
+router.post("/getUserBlogs", auth, async(req, res)=>{
     try{
         const handle = req.body.handle;
         const query = `SELECT HANDLE, BLOG_ID, TITLE FROM BLOGS WHERE HANDLE = :handle`;
@@ -143,15 +143,12 @@ router.get("/getUserBlogs", auth, async(req, res)=>{
 
 
 
-router.get("/getComments/:id", auth, async(req, res)=>{
+router.post("/getComments/", auth, async(req, res)=>{
     try{
-        const blogId = req.params.id;
+        const blogId = req.body.blogId;
         const handle = res.locals.handle;
-        let query = `SELECT * FROM COMMENTS WHERE BLOG_ID = :blogId`;
+        let query = `SELECT * FROM COMMENTS WHERE BLOG_ID = :blogId ORDER BY TIME DESC`;
         let result = await executeQuery(query, {blogId});
-        if(result.rows.length == 0){
-            throw "No such blog";
-        }
 
         let comments = [];
 
@@ -161,14 +158,14 @@ router.get("/getComments/:id", auth, async(req, res)=>{
                 {
                     commentId: c[0],
                     blogId: c[1],
-                    handle: c[2],
-                    data: c[3],
+                    commenter: c[2],
+                    comment: c[3],
                     time: c[4]
                 }
             )
         })
 
-        res.send({status: 'success', comments: comments});
+        res.json({status: 'success', comments: comments});
 
     }catch(error){
         console.log(error);
@@ -202,8 +199,8 @@ router.post("/delete", auth, async(req, res)=>{
     try{
         const blogId = req.body.blogId;
         const handle = res.locals.handle;
-        query = `DELETE FROM BLOGS WHERE BLOG_ID = :blogId AND HANDLE =:handle`;
-        result = await executeQuery(query, {blogId, handle});
+        const query = `DELETE FROM BLOGS WHERE BLOG_ID = :blogId AND HANDLE =:handle`;
+        const result = await executeQuery(query, {blogId, handle});
         res.json({status: 'success', message: result});
     }catch(err){
         res.json({status: 'failure', message: err})

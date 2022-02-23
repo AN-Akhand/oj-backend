@@ -153,13 +153,13 @@ router.post("/delete", auth, async(req, res)=>{
         const contestId = req.body.contestId;
 		const problemId = req.body.problemId;
         const handle = res.locals.handle;
-        let query = `SELECT START_TIME FROM PROBLEMS WHERE CONTEST_ID = :contestId AND HANDLE = :handle`;
+        let query = `SELECT START_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId AND HANDLE = :handle`;
         let result = await executeQuery(query, {contestId, handle});
         if(result.rows.length == 0){
-            throw "Not Allowed";
+            throw "Contest is running!";
         }
         if(result.rows[0][0] < Date.now()){
-            throw "Not Allowed";
+            throw "Contest already finished!";
         }
         query = `DELETE FROM PROBLEMS WHERE CONTEST_ID = :contestId AND PROBLEM_ID =:problemId`;
         result = await executeQuery(query, {contestId, problemId});
@@ -209,7 +209,7 @@ router.post('/submission', auth, async (req, res) => {
 		const problemId = req.body.problemId;
 		const submissionId = req.body.submissionId;
 		const handle = res.locals.handle;
-		let query = `SELECT START_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId`;
+		let query = `SELECT END_TIME FROM CONTESTS WHERE CONTEST_ID = :contestId`;
 		let result = await executeQuery(query, {contestId});
 		const endTime = result.rows[0][0];
 		query = `SELECT * FROM SUBMISSIONS WHERE PROBLEM_ID =: problemId AND CONTEST_ID = :contestId AND submission_id = :submissionId`;
@@ -235,9 +235,9 @@ router.post('/submission', auth, async (req, res) => {
 });
 
 
-router.get("/userSubmissions", auth, async (req, res)=>{
+router.post("/user-submissions", auth, async (req, res)=>{
 	try{
-		const handle = res.locals.handle;
+		const handle = req.body.handle;
 		const query = `SELECT S.*, P.NAME FROM SUBMISSIONS S JOIN PROBLEMS P 
 						ON(S.CONTEST_ID = P.CONTEST_ID AND S.PROBLEM_ID = P.PROBLEM_ID) 
 						WHERE S.HANDLE = :handle`;

@@ -156,7 +156,7 @@ router.get('/rating', async (req, res)=>{
 				rating: u[5]
             })
         })
-        res.json({status: 'success', users});
+        res.json({status: 'success', result});
     }catch(error){
         console.log(error);
         res.json({status: 'failure', message: error});
