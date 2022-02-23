@@ -8,6 +8,19 @@ import {test} from './../util/compiler.js'
 const router = express.Router();
 router.use(express.json());
 
+router.post('/getTutorial', async (req, res) => {
+	const {contestId, problemNo} = req.body;
+	try{
+		const query = `SELECT BLOG_ID FROM TUTORIALS WHERE CONTEST_ID = :contestId AND PROBLEM_ID = :problemNo`;
+		const result = await executeQuery(query, {contestId, problemNo});
+		console.log(result);
+		if(result.rows.length === 0) res.json({status: 'failed', message: 'no tutorial found'});
+		else res.json({status: 'success', blogId: result.rows[0][0]});
+	}catch (err){
+		res.json({status: 'success', message: 'server error!'});
+	}
+})
+
 router.post('/get', async (req, res) => {
 	// console.log('eitay ashe!')
 	console.log(req.body);

@@ -330,3 +330,14 @@ Content-Type: application/json
     "contestId": 69,
     "problemId": 1
 }
+
+
+###
+
+POST http://localhost:5000/problems/getTutorial
+Content-Type: application/json
+
+{
+  "contestId": 182,
+  "problemNo": 1
+}

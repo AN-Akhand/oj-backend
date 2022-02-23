@@ -147,7 +147,7 @@ router.get('/rating', async (req, res)=>{
     try{
         const query = `SELECT * FROM USERS ORDER BY GLOBAL_RATING DESC`;
         const result = await executeQuery(query, {});
-		console.log(result);
+		// console.log(result);
         let users = [];
         result.rows.forEach(u=>{
             users.push({
