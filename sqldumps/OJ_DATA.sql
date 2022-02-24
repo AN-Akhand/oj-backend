@@ -39,7 +39,10 @@ INSERT INTO C##OJ.CONTESTS (CONTEST_ID, TITLE, MIN_RATING, MAX_RATING, HANDLE, S
 
 
 -- BLOGS
-INSERT INTO C##OJ.BLOGS (HANDLE, BLOG_ID, DATA, CATEGORY, PUBLISH_DATE, TITLE) VALUES ('red1', 203, 'The  **queen**  (♕, ♛) is the most powerful  [piece](https://en.wikipedia.org/wiki/Chess_piece "Chess piece")  in the game of  [chess](https://en.wikipedia.org/wiki/Chess "Chess"), able to move any number of squares vertically, horizontally or  [diagonally](https://en.wikipedia.org/wiki/Diagonal "Diagonal"), combining the power of the  [rook](https://en.wikipedia.org/wiki/Rook_(chess) "Rook (chess)")  and  [bishop](https://en.wikipedia.org/wiki/Bishop_(chess) "Bishop (chess)"). Each player starts the game with one queen, placed in the middle of the first  [rank](https://en.wikipedia.org/wiki/Glossary_of_chess#rank "Glossary of chess")  next to the  [king](https://en.wikipedia.org/wiki/King_(chess) "King (chess)"). Because the queen is the strongest piece, a  [pawn](https://en.wikipedia.org/wiki/Pawn_(chess) "Pawn (chess)")  is  [promoted](https://en.wikipedia.org/wiki/Promotion_(chess) "Promotion (chess)")  to a queen in the vast majority of cases.
+-- ----------------------------
+-- Records of BLOGS
+-- ----------------------------
+INSERT INTO "C##OJ"."BLOGS" VALUES ('red1', '203', 'The  **queen**  (♕, ♛) is the most powerful  [piece](https://en.wikipedia.org/wiki/Chess_piece "Chess piece")  in the game of  [chess](https://en.wikipedia.org/wiki/Chess "Chess"), able to move any number of squares vertically, horizontally or  [diagonally](https://en.wikipedia.org/wiki/Diagonal "Diagonal"), combining the power of the  [rook](https://en.wikipedia.org/wiki/Rook_(chess) "Rook (chess)")  and  [bishop](https://en.wikipedia.org/wiki/Bishop_(chess) "Bishop (chess)"). Each player starts the game with one queen, placed in the middle of the first  [rank](https://en.wikipedia.org/wiki/Glossary_of_chess#rank "Glossary of chess")  next to the  [king](https://en.wikipedia.org/wiki/King_(chess) "King (chess)"). Because the queen is the strongest piece, a  [pawn](https://en.wikipedia.org/wiki/Pawn_(chess) "Pawn (chess)")  is  [promoted](https://en.wikipedia.org/wiki/Promotion_(chess) "Promotion (chess)")  to a queen in the vast majority of cases.
 
 The predecessor to the queen is the  _ferz_, a weak piece only able to move or capture one step diagonally, originating from the Persian game of  _[shatranj](https://en.wikipedia.org/wiki/Shatranj "Shatranj")_. The modern queen gained its power in the 15th century.
 
@@ -49,12 +52,12 @@ The white queen starts on d1, while the black queen starts on d8. With the  [che
 
 The queen can be moved any number of unoccupied squares in a straight line vertically, horizontally, or diagonally, thus combining the moves of the  [rook](https://en.wikipedia.org/wiki/Rook_(chess) "Rook (chess)")  and  [bishop](https://en.wikipedia.org/wiki/Bishop_(chess) "Bishop (chess)"). The queen captures by occupying the square on which an enemy piece sits.
 
-Although both players start with one queen each, a [pawn](https://en.wikipedia.org/wiki/Pawn_(chess) "Pawn (chess)") can be [promoted](https://en.wikipedia.org/wiki/Promotion_(chess) "Promotion (chess)") to any of several types of pieces, including a queen, when the pawn is moved to the player''s furthest rank (the opponent''s first rank). Such a queen created by promotion can be an additional queen, or if the player''s queen has been captured, a replacement queen. Pawn promotion to a queen is colloquially called _queening_, which is by far the most common type of piece a pawn is promoted to due to the relative power of a queen.', null, 1645592056620, 'Chess and Queens');
-INSERT INTO C##OJ.BLOGS (HANDLE, BLOG_ID, DATA, CATEGORY, PUBLISH_DATE, TITLE) VALUES ('sabit', 242, '# Title
+Although both players start with one queen each, a [pawn](https://en.wikipedia.org/wiki/Pawn_(chess) "Pawn (chess)") can be [promoted](https://en.wikipedia.org/wiki/Promotion_(chess) "Promotion (chess)") to any of several types of pieces, including a queen, when the pawn is moved to the player''s furthest rank (the opponent''s first rank). Such a queen created by promotion can be an additional queen, or if the player''s queen has been captured, a replacement queen. Pawn promotion to a queen is colloquially called _queening_, which is by far the most common type of piece a pawn is promoted to due to the relative power of a queen.', NULL, '1645592056620', 'Chess and Queens');
+INSERT INTO "C##OJ"."BLOGS" VALUES ('sabit', '242', '# Title
 ## Subtitle
 
-Demo blog', null, 1645647544644, 'Test Blog');
-INSERT INTO C##OJ.BLOGS (HANDLE, BLOG_ID, DATA, CATEGORY, PUBLISH_DATE, TITLE) VALUES ('nafee', 243, 'The bishop (♗, ♝) is a piece in the game of chess. It moves and captures along diagonals without jumping over intervening pieces. Each player begins the game with two bishops. One starts between the king''s knight and the king, the other between the queen''s knight and the queen. The starting squares are c1 and f1 for White''s bishops, and c8 and f8 for Black''s bishops.
+Demo blog', NULL, '1645647544644', 'Test Blog');
+INSERT INTO "C##OJ"."BLOGS" VALUES ('nafee', '243', 'The bishop (♗, ♝) is a piece in the game of chess. It moves and captures along diagonals without jumping over intervening pieces. Each player begins the game with two bishops. One starts between the king''s knight and the king, the other between the queen''s knight and the queen. The starting squares are c1 and f1 for White''s bishops, and c8 and f8 for Black''s bishops.
 
 ### Placement and movement
 The bishop has no restrictions in distance for each move but is limited to diagonal movement. Bishops, like all other pieces except the knight, cannot jump over other pieces. A bishop captures by occupying the square on which an enemy piece sits.
@@ -64,21 +67,21 @@ The bishops may be differentiated according to which wing they begin on, e.g. th
 
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/Mstf9R5/New-Bitmap-Image.png" alt="New-Bitmap-Image" border="0"></a>
 
-<a href="https://imgbb.com/"><img src="https://i.ibb.co/R9fQmyC/New-Bitmap-Image.png" alt="New-Bitmap-Image" border="0"></a>', null, 1645647651113, 'Bishops in Chess');
-INSERT INTO C##OJ.BLOGS (HANDLE, BLOG_ID, DATA, CATEGORY, PUBLISH_DATE, TITLE) VALUES ('nafee', 244, '#### Hello Everyone?
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/R9fQmyC/New-Bitmap-Image.png" alt="New-Bitmap-Image" border="0"></a>', NULL, '1645647651113', 'Bishops in Chess');
+INSERT INTO "C##OJ"."BLOGS" VALUES ('nafee', '244', '#### Hello Everyone?
 
 So, there is this announcement of a new contest.
 
-You all are invited to participate...', null, 1645647757311, 'The End Game');
-INSERT INTO C##OJ.BLOGS (HANDLE, BLOG_ID, DATA, CATEGORY, PUBLISH_DATE, TITLE) VALUES ('nafee', 249, '#### Hello Everyone?
+You all are invited to participate...', NULL, '1645647757311', 'The End Game');
+INSERT INTO "C##OJ"."BLOGS" VALUES ('nafee', '249', '#### Hello Everyone?
 
 So, there is this announcement of a new contest.
 
 You all are invited to participate...
 
-This contest is rated,
-there will be **3 problems** and and **1 hour** to solve them ', null, 1645658989714, 'not visible');
-INSERT INTO C##OJ.BLOGS (HANDLE, BLOG_ID, DATA, CATEGORY, PUBLISH_DATE, TITLE) VALUES ('nafee', 241, 'The bishop (♗, ♝) is a piece in the game of chess. It moves and captures along diagonals without jumping over intervening pieces. Each player begins the game with two bishops. One starts between the king''s knight and the king, the other between the queen''s knight and the queen. The starting squares are c1 and f1 for White''s bishops, and c8 and f8 for Black''s bishops.
+This contest is rated, 
+there will be **3 problems** and and **1 hour** to solve them ', NULL, '1645658989714', 'not visible');
+INSERT INTO "C##OJ"."BLOGS" VALUES ('nafee', '241', 'The bishop (♗, ♝) is a piece in the game of chess. It moves and captures along diagonals without jumping over intervening pieces. Each player begins the game with two bishops. One starts between the king''s knight and the king, the other between the queen''s knight and the queen. The starting squares are c1 and f1 for White''s bishops, and c8 and f8 for Black''s bishops.
 
 ### Placement and movement
 The bishop has no restrictions in distance for each move but is limited to diagonal movement. Bishops, like all other pieces except the knight, cannot jump over other pieces. A bishop captures by occupying the square on which an enemy piece sits.
@@ -91,52 +94,53 @@ The bishops may be differentiated according to which wing they begin on, e.g. th
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/R9fQmyC/New-Bitmap-Image.png" alt="New-Bitmap-Image" border="0"></a>
 
 
-', null, 1645643840927, 'Bishops in Chess');
-INSERT INTO C##OJ.BLOGS (HANDLE, BLOG_ID, DATA, CATEGORY, PUBLISH_DATE, TITLE) VALUES ('nafee', 247, '#### Hello Everyone?
+', NULL, '1645643840927', 'Bishops in Chess');
+INSERT INTO "C##OJ"."BLOGS" VALUES ('nafee', '247', '#### Hello Everyone?
 
 So, there is this announcement of a new contest.
 
 You all are invited to participate...
 
-This contest is rated,
-there will be **3 problems** and and **1 hour** to solve them ', null, 1645657753770, 'Civil War');
-INSERT INTO C##OJ.BLOGS (HANDLE, BLOG_ID, DATA, CATEGORY, PUBLISH_DATE, TITLE) VALUES ('nafee', 248, '#### Hello Everyone?
+This contest is rated, 
+there will be **3 problems** and and **1 hour** to solve them ', NULL, '1645657753770', 'Civil War');
+INSERT INTO "C##OJ"."BLOGS" VALUES ('nafee', '248', '#### Hello Everyone?
 
 So, there is this announcement of a new contest.
 
 You all are invited to participate...
 
-This contest is rated,
-there will be **3 problems** and and **1 hour** to solve them ', null, 1645658273453, 'WW III');
-INSERT INTO C##OJ.BLOGS (HANDLE, BLOG_ID, DATA, CATEGORY, PUBLISH_DATE, TITLE) VALUES ('nafee', 250, '#### Hello Everyone?
+This contest is rated, 
+there will be **3 problems** and and **1 hour** to solve them ', NULL, '1645658273453', 'WW III');
+INSERT INTO "C##OJ"."BLOGS" VALUES ('nafee', '250', '#### Hello Everyone?
 
 So, there is this announcement of a new contest.
 
 You all are invited to participate...
 
-This contest is rated,
-there will be **3 problems** and and **1 hour** to solve them ', null, 1645659336391, 'CPP Special');
-INSERT INTO C##OJ.BLOGS (HANDLE, BLOG_ID, DATA, CATEGORY, PUBLISH_DATE, TITLE) VALUES ('nafee', 204, '#### Hello Everyone?
+This contest is rated, 
+there will be **3 problems** and and **1 hour** to solve them ', NULL, '1645659336391', 'CPP Special');
+INSERT INTO "C##OJ"."BLOGS" VALUES ('nafee', '204', '#### Hello Everyone?
 
 So, there is this announcement of a new contest.
 
-You all are invited to participate...', null, 1645599144495, 'OJ Contest');
-INSERT INTO C##OJ.BLOGS (HANDLE, BLOG_ID, DATA, CATEGORY, PUBLISH_DATE, TITLE) VALUES ('nafee', 245, '#### Hello Everyone?
-
-So, there is this announcement of a new contest.
-
-You all are invited to participate...
-
-This contest is rated,
-there will be **3 problems** and and **1 hour** to solve them ', null, 1645656719193, 'Infinity');
-INSERT INTO C##OJ.BLOGS (HANDLE, BLOG_ID, DATA, CATEGORY, PUBLISH_DATE, TITLE) VALUES ('nafee', 246, '#### Hello Everyone?
+You all are invited to participate...', NULL, '1645599144495', 'OJ Contest');
+INSERT INTO "C##OJ"."BLOGS" VALUES ('nafee', '245', '#### Hello Everyone?
 
 So, there is this announcement of a new contest.
 
 You all are invited to participate...
 
-This contest is rated,
-there will be **3 problems** and and **1 hour** to solve them ', null, 1645656969273, 'Infinity War 2');
+This contest is rated, 
+there will be **3 problems** and and **1 hour** to solve them ', NULL, '1645656719193', 'Infinity');
+INSERT INTO "C##OJ"."BLOGS" VALUES ('nafee', '246', '#### Hello Everyone?
+
+So, there is this announcement of a new contest.
+
+You all are invited to participate...
+
+This contest is rated, 
+there will be **3 problems** and and **1 hour** to solve them ', NULL, '1645656969273', 'Infinity War 2');
+
 
 
 -- ANNOUNCEMENTS
