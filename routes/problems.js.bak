@@ -101,7 +101,7 @@ router.post('/create', auth, async(req, res) => {
 			throw "Not Allowed";
 		}
 		query = `SELECT problem_id from problems where contest_id = :contestId and problem_id =: problemNo`;
-		const problemQuery = await executeQuery(query, {contestId, problemNo: problem.problemNo});
+		const problemQuery = await executeQuery(query, {contestId, problemNo});
 		if(problemQuery.rows.length !== 0){
 			res.json({status: 'failure', message: 'problem no should be unique!'});
 			return;
