@@ -34,7 +34,7 @@ Level 2, Term 2 Database Project by [Md Abrar Nafee Akhand](https://github.com/A
 - Or you can download the dump files and connect to sqlplus as c##oj and run
 ```shell
   @"{DIRECTORY_PATH_WHERE_THE_DUMPS_ARE_SAVED}\OJ_DDL.sql";
-  @"{DIRECTORY_PATH_WHERE_THE_DUMPS_ARE_SAVED}\OJ_DDL.sql";
+  @"{DIRECTORY_PATH_WHERE_THE_DUMPS_ARE_SAVED}\OJ_DATA.sql";
   ```
 ##### Setting up Server
 
