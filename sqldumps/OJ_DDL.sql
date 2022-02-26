@@ -1,14 +1,13 @@
-create sequence CONTEST_SEQ
-/
+create sequence CONTEST_SEQ;
 
-create sequence BLOG_SEQ
-/
 
-create sequence SUB_SEQ
-/
+create sequence BLOG_SEQ;
 
-create sequence COMMENT_SEQ
-/
+
+create sequence SUB_SEQ;
+
+create sequence COMMENT_SEQ;
+
 
 create table USERS
 (
@@ -23,8 +22,7 @@ create table USERS
     EMAIL         VARCHAR2(255),
     COUNTRY       VARCHAR2(60),
     INSTITUTE     VARCHAR2(255)
-)
-/
+);
 
 create table CONTESTS
 (
@@ -40,8 +38,7 @@ create table CONTESTS
             references USERS,
     START_TIME NUMBER,
     END_TIME   NUMBER
-)
-/
+);
 
 create table PROBLEMS
 (
@@ -61,8 +58,7 @@ create table PROBLEMS
     SOLVES       NUMBER default 0,
     constraint PROBLEM_PK
         primary key (CONTEST_ID, PROBLEM_ID)
-)
-/
+);
 
 create table STANDINGS
 (
@@ -78,8 +74,7 @@ create table STANDINGS
     RATING_CHANGE NUMBER,
     constraint PARTICIPATION_PK
         primary key (HANDLE, CONTEST_ID)
-)
-/
+);
 
 create table SUBMISSIONS
 (
@@ -98,8 +93,7 @@ create table SUBMISSIONS
     VERDICT_DETAIL VARCHAR2(2000),
     constraint S_P_FK
         foreign key (CONTEST_ID, PROBLEM_ID) references PROBLEMS
-)
-/
+);
 
 create table BLOGS
 (
@@ -113,8 +107,7 @@ create table BLOGS
     CATEGORY     VARCHAR2(100),
     PUBLISH_DATE NUMBER,
     TITLE        VARCHAR2(100)
-)
-/
+);
 
 create table TUTORIALS
 (
@@ -128,8 +121,7 @@ create table TUTORIALS
     PROBLEM_ID VARCHAR2(1) not null,
     constraint T_P_FK
         foreign key (CONTEST_ID, PROBLEM_ID) references PROBLEMS
-)
-/
+);
 
 create table ANNOUNCEMENTS
 (
@@ -138,8 +130,7 @@ create table ANNOUNCEMENTS
             references BLOGS
                 on delete cascade,
     CONTEST_ID NUMBER not null
-)
-/
+);
 
 create table COMMENTS
 (
@@ -155,8 +146,7 @@ create table COMMENTS
             references USERS,
     DATA       VARCHAR2(100),
     TIME       NUMBER
-)
-/
+);
 
 create or replace PROCEDURE insert_contest(start_time IN NUMBER, end_time IN NUMBER, handle IN VARCHAR2, title IN VARCHAR2, id OUT NUMBER)
 IS
